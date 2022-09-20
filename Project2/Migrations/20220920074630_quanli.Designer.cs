@@ -10,7 +10,7 @@ using QLHS.Models;
 namespace Project2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220919035201_quanli")]
+    [Migration("20220920074630_quanli")]
     partial class quanli
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -55,6 +55,80 @@ namespace Project2.Migrations
                     b.HasIndex("loaiDiemId");
 
                     b.ToTable("diems");
+                });
+
+            modelBuilder.Entity("Project2.Models.GiangVien", b =>
+                {
+                    b.Property<int>("gvId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Hinh")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Ho")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Lop")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("Role")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Ten")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("diaChi")
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("gioiTinh")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("lopHocId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("maGV")
+                        .HasColumnType("int");
+
+                    b.Property<int>("maSoThue")
+                        .HasColumnType("int");
+
+                    b.Property<string>("matKhau")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("monHocChinh")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<string>("monKienNhiem")
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
+
+                    b.Property<int?>("roleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("soDienThoai")
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)");
+
+                    b.HasKey("gvId");
+
+                    b.HasIndex("lopHocId");
+
+                    b.HasIndex("roleId");
+
+                    b.ToTable("giangViens");
                 });
 
             modelBuilder.Entity("Project2.Models.HocPhi", b =>
@@ -228,6 +302,21 @@ namespace Project2.Migrations
                     b.ToTable("monHocs");
                 });
 
+            modelBuilder.Entity("Project2.Models.Role", b =>
+                {
+                    b.Property<int>("roleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("roleName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("roleId");
+
+                    b.ToTable("roles");
+                });
+
             modelBuilder.Entity("Project2.Models.ThoiKhoaBieu", b =>
                 {
                     b.Property<int>("Id")
@@ -342,7 +431,7 @@ namespace Project2.Migrations
 
                     b.HasKey("idNguoiDung");
 
-                    b.ToTable("NguoiDung");
+                    b.ToTable("nguoiDungs");
                 });
 
             modelBuilder.Entity("Project2.Models.Diem", b =>
@@ -360,6 +449,21 @@ namespace Project2.Migrations
                     b.Navigation("loaiDiem");
 
                     b.Navigation("monHoc");
+                });
+
+            modelBuilder.Entity("Project2.Models.GiangVien", b =>
+                {
+                    b.HasOne("Project2.Models.LopHoc", "lopHoc")
+                        .WithMany()
+                        .HasForeignKey("lopHocId");
+
+                    b.HasOne("Project2.Models.Role", "role")
+                        .WithMany()
+                        .HasForeignKey("roleId");
+
+                    b.Navigation("lopHoc");
+
+                    b.Navigation("role");
                 });
 
             modelBuilder.Entity("Project2.Models.HocPhi", b =>

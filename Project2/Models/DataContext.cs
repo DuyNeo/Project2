@@ -15,7 +15,7 @@ namespace QLHS.Models
         {
 
         }
-        public DbSet<NguoiDung> NguoiDungs { get; set; }
+       
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
@@ -33,5 +33,7 @@ namespace QLHS.Models
         public DbSet<HocPhi> hocPhis { get; set; }
 
         public DbSet<MonHoc> monHocs { get; set; }
+        public DbSet<GiangVien> giangViens { get; set; }
+        public DbSet<Role> roles { get; set; }
     }
 }

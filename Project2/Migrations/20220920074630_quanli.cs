@@ -38,7 +38,7 @@ namespace Project2.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "NguoiDung",
+                name: "nguoiDungs",
                 columns: table => new
                 {
                     idNguoiDung = table.Column<int>(type: "int", nullable: false)
@@ -55,7 +55,20 @@ namespace Project2.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_NguoiDung", x => x.idNguoiDung);
+                    table.PrimaryKey("PK_nguoiDungs", x => x.idNguoiDung);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "roles",
+                columns: table => new
+                {
+                    roleId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    roleName = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_roles", x => x.roleId);
                 });
 
             migrationBuilder.CreateTable(
@@ -91,9 +104,9 @@ namespace Project2.Migrations
                 {
                     table.PrimaryKey("PK_hocPhis", x => x.hocPhiId);
                     table.ForeignKey(
-                        name: "FK_hocPhis_NguoiDung_hocPhiNguoiDungId",
+                        name: "FK_hocPhis_nguoiDungs_hocPhiNguoiDungId",
                         column: x => x.hocPhiNguoiDungId,
-                        principalTable: "NguoiDung",
+                        principalTable: "nguoiDungs",
                         principalColumn: "idNguoiDung",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -125,9 +138,9 @@ namespace Project2.Migrations
                         principalColumn: "khoaHocId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_lopHocs_NguoiDung_Lop",
+                        name: "FK_lopHocs_nguoiDungs_Lop",
                         column: x => x.Lop,
-                        principalTable: "NguoiDung",
+                        principalTable: "nguoiDungs",
                         principalColumn: "idNguoiDung",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -159,6 +172,47 @@ namespace Project2.Migrations
                         column: x => x.toBoMonId,
                         principalTable: "toBoMons",
                         principalColumn: "toBoMonId",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "giangViens",
+                columns: table => new
+                {
+                    gvId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Ho = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Ten = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    maGV = table.Column<int>(type: "int", nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    maSoThue = table.Column<int>(type: "int", nullable: false),
+                    soDienThoai = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: true),
+                    diaChi = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    gioiTinh = table.Column<int>(type: "int", nullable: false),
+                    DOB = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Hinh = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    Lop = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    monHocChinh = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    monKienNhiem = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
+                    matKhau = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    roleId = table.Column<int>(type: "int", nullable: true),
+                    lopHocId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_giangViens", x => x.gvId);
+                    table.ForeignKey(
+                        name: "FK_giangViens_lopHocs_lopHocId",
+                        column: x => x.lopHocId,
+                        principalTable: "lopHocs",
+                        principalColumn: "lopHocId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_giangViens_roles_roleId",
+                        column: x => x.roleId,
+                        principalTable: "roles",
+                        principalColumn: "roleId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -221,9 +275,9 @@ namespace Project2.Migrations
                         principalColumn: "monHocId",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_thoiKhoaBieus_NguoiDung_ScheduleUser",
+                        name: "FK_thoiKhoaBieus_nguoiDungs_ScheduleUser",
                         column: x => x.ScheduleUser,
-                        principalTable: "NguoiDung",
+                        principalTable: "nguoiDungs",
                         principalColumn: "idNguoiDung",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -237,6 +291,16 @@ namespace Project2.Migrations
                 name: "IX_diems_loaiDiemId",
                 table: "diems",
                 column: "loaiDiemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_giangViens_lopHocId",
+                table: "giangViens",
+                column: "lopHocId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_giangViens_roleId",
+                table: "giangViens",
+                column: "roleId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_hocPhis_hocPhiNguoiDungId",
@@ -280,10 +344,10 @@ namespace Project2.Migrations
                 name: "diems");
 
             migrationBuilder.DropTable(
-                name: "hocPhis");
+                name: "giangViens");
 
             migrationBuilder.DropTable(
-                name: "lopHocs");
+                name: "hocPhis");
 
             migrationBuilder.DropTable(
                 name: "thoiKhoaBieus");
@@ -292,10 +356,16 @@ namespace Project2.Migrations
                 name: "loaiDiems");
 
             migrationBuilder.DropTable(
+                name: "lopHocs");
+
+            migrationBuilder.DropTable(
+                name: "roles");
+
+            migrationBuilder.DropTable(
                 name: "monHocs");
 
             migrationBuilder.DropTable(
-                name: "NguoiDung");
+                name: "nguoiDungs");
 
             migrationBuilder.DropTable(
                 name: "khoaHocs");
