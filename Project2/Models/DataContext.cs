@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QLHS.Models
+namespace Project2.Models
 {
     public class DataContext : DbContext
     {

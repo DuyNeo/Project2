@@ -8,12 +8,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using QLHS.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Project2.Models;
+using Project2.Services;
 namespace Project2
 {
     public class Startup
@@ -34,7 +34,18 @@ namespace Project2
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Project2", Version = "v1" });
+                c.ResolveConflictingActions(apiDescriptions => apiDescriptions.First());
             });
+            services.AddTransient<INguoiDung, NguoiDungSvc>();
+            services.AddTransient<IGiangVien, GiangVienSvc>();
+            //services.AddTransient<IDiem, DiemSvc>();
+            //services.AddTransient<IHocPhi, HocPhiSvc>();
+            //services.AddTransient<IKhoaHoc, KhoaHocSvc>();
+            //services.AddTransient<ILoaiDiem, LoaiDiemSvc>();
+            //services.AddTransient<ILopHoc, LopHocSvc>();
+            //services.AddTransient<IMonHoc, MonHocSvc>();
+            //services.AddTransient<IThoiKhoaBieu, ThoiKhoaBieuSvc>();
+            //services.AddTransient<IToBoMon, ToBoMonSvc>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,7 +61,7 @@ namespace Project2
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

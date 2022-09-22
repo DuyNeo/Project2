@@ -5,10 +5,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace QLHS.Models
+namespace Project2.Models
 {
     public class NguoiDung
     {
+        public enum Gender
+        {
+            [Display(Name = "Nam")]
+            Nam = 1,
+            [Display(Name = "Nữ")]
+            Nữ = 2,
+        }
         [Key]
         public int idNguoiDung { get; set; }
         [Column(TypeName = "nvarchar(100)")]
@@ -38,25 +45,21 @@ namespace QLHS.Models
         public bool IsAdmin { get; set; }
         [Display(Name ="Đang sử dụng")]
         public bool Locked { get; set; }
+
         [Column(TypeName = "varchar(50)"), MaxLength(50)]
         [Display(Name = "Mật khẩu")]
         [DataType(DataType.Password)]
         public string matKhau { get; set; }
+
         [Column(TypeName = "varchar(50)"), MaxLength(50)]
         [Display(Name = "Nhập lại mật khẩu")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Mật khẩu không khớp")]
+        [Compare("matKhau", ErrorMessage = "Mật khẩu không khớp")]
         [NotMapped]
         public string xacNhanMatKhau { get; set; }
 
 
     }
-    public enum Gender
-    {
-        [Display(Name = "Nam")]
-        Nam = 1,
-        [Display(Name = "Nữ")]
-        Nữ = 2,
-    }
+   
 
 }
