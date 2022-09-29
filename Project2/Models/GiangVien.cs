@@ -55,7 +55,7 @@ namespace Project2.Models
         [Column(TypeName = "varchar(50)"), MaxLength(50)]
         [Display(Name = "Nhập lại mật khẩu")]
         [DataType(DataType.Password)]
-        [Compare("Password", ErrorMessage = "Mật khẩu không khớp")]
+        [Compare("matKhau", ErrorMessage = "Mật khẩu không khớp")]
         [NotMapped]
         public string xacNhanMatKhau { get; set; }
         [ForeignKey("Role")]

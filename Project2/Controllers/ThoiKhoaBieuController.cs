@@ -12,23 +12,22 @@ namespace Project2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MonHocController : ControllerBase
+    public class ThoiKhoaBieuController : ControllerBase
     {
-        private readonly IMonHoc _MonHoc;
+        private readonly IThoiKhoaBieu _ThoiKhoaBieu;
         private readonly DataContext _context;
-        public MonHocController(IMonHoc MonHoc, DataContext context)
+        public ThoiKhoaBieuController(IThoiKhoaBieu ThoiKhoaBieu, DataContext context)
         {
             _context = context;
-            _MonHoc = MonHoc;
+            _ThoiKhoaBieu = ThoiKhoaBieu;
         }
-    
+
         [HttpPost]
-        [Route("Add")]
-        public async Task<ActionResult<int>> AddMonHocAsync(MonHoc MonHoc)
+        public async Task<ActionResult<int>> AddThoiKhoaBieuAsync(ThoiKhoaBieu ThoiKhoaBieu)
         {
             try
             {
-                await _MonHoc.AddMonhocAsync(MonHoc);
+                await _ThoiKhoaBieu.AddThoiKhoaBieuAsync(ThoiKhoaBieu);
             }
             catch (Exception ex)
             {
@@ -37,19 +36,18 @@ namespace Project2.Controllers
             return Ok(1);
         }
         [HttpGet]
-        [Route("ListMonHoc")]
-        public async Task<ActionResult<IEquatable<MonHoc>>> GetMonHocAllAsync()
+        [Route("ListThoiKhoaBieu")]
+        public async Task<ActionResult<IEnumerable<ThoiKhoaBieu>>> GetThoiKhoaBieuAllAsync()
         {
-             await _MonHoc.GetMonhocAllAsync();
-            return Ok();            
+            return await _ThoiKhoaBieu.GetThoiKhoaBieuAllAsync();
+            //return Ok();
         }
 
         [HttpPut("{id}")]
-        [Route("Update")]
 
-        public async Task<IActionResult> PutMonHoc(int id, MonHoc MonHoc)
+        public async Task<IActionResult> PutThoiKhoaBieu(int id, ThoiKhoaBieu ThoiKhoaBieu)
         {
-            if (id != MonHoc.monHocId)
+            if (id != ThoiKhoaBieu.Id)
             {
                 return BadRequest();
             }
@@ -64,12 +62,12 @@ namespace Project2.Controllers
 
             try
             {
-                await _MonHoc.EditMonhocAsync(id, MonHoc);
+                await _ThoiKhoaBieu.EditThoiKhoaBieuAsync(id, ThoiKhoaBieu);
                 //await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!MonHocExists(id))
+                if (!ThoiKhoaBieuExists(id))
                 {
                     return NotFound();
                 }
@@ -79,25 +77,24 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_MonHoc.GetMonhocAsync(id));
+            return Ok(_ThoiKhoaBieu.GetThoiKhoaBieuAsync(id));
         }
-        private bool MonHocExists(int id)
+        private bool ThoiKhoaBieuExists(int id)
         {
-            return _context.monHocs.Any(e => e.monHocId == id);
+            return _context.thoiKhoaBieus.Any(e => e.Id == id);
 
         }
         [HttpDelete("{id}")]
-        [Route("Delete")]
 
-        public async Task<IActionResult> DeletemonHoc(int id)
+        public async Task<IActionResult> DeleteThoiKhoaBieu(int id)
         {
-            var monHoc = await _context.monHocs.FindAsync(id);
-            if (monHoc == null)
+            var thoiKhoaBieu = await _context.thoiKhoaBieus.FindAsync(id);
+            if (thoiKhoaBieu == null)
             {
                 return NotFound();
             }
 
-            _context.monHocs.Remove(monHoc);
+            _context.thoiKhoaBieus.Remove(thoiKhoaBieu);
             await _context.SaveChangesAsync();
 
             return NoContent();

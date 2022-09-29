@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace Project2.Models
 {
+    public enum GT
+    {
+        [Display(Name = "Nam")]
+        Nam = 1,
+        [Display(Name = "Nữ")]
+        Nữ = 2,
+    }
     public class NguoiDung
     {
-        public enum Gender
-        {
-            [Display(Name = "Nam")]
-            Nam = 1,
-            [Display(Name = "Nữ")]
-            Nữ = 2,
-        }
         [Key]
         public int idNguoiDung { get; set; }
         [Column(TypeName = "nvarchar(100)")]
@@ -37,7 +37,7 @@ namespace Project2.Models
 
         public string chucDanh { get; set; }
         [Display(Name = "Giới Tính")]
-        public Gender gioiTinh { get; set; }
+        public GT gioiTinh { get; set; }
         [Display(Name = "Ngày sinh")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime? DOB { get; set; }

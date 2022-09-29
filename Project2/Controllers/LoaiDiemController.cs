@@ -21,9 +21,8 @@ namespace Project2.Controllers
             _context = context;
             _LoaiDiem = LoaiDiem;
         }
-    
+
         [HttpPost]
-        [Route("Add")]
         public async Task<ActionResult<int>> AddLoaiDiemAsync(LoaiDiem LoaiDiem)
         {
             try
@@ -38,14 +37,13 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListLoaiDiem")]
-        public async Task<ActionResult<IEquatable<LoaiDiem>>> GetLoaiDiemAllAsync()
+        public async Task<ActionResult<IEnumerable<LoaiDiem>>> GetLoaiDiemAllAsync()
         {
-             await _LoaiDiem.GetLoaidiemAllAsync();
-            return Ok();            
+            return await _LoaiDiem.GetLoaidiemAllAsync();
+            //return Ok();
         }
 
         [HttpPut("{id}")]
-        [Route("Update")]
 
         public async Task<IActionResult> PutLoaiDiem(int id, LoaiDiem LoaiDiem)
         {
@@ -87,7 +85,6 @@ namespace Project2.Controllers
 
         }
         [HttpDelete("{id}")]
-        [Route("Delete")]
 
         public async Task<IActionResult> DeleteloaiDiem(int id)
         {

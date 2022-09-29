@@ -38,14 +38,15 @@ namespace Project2
             });
             services.AddTransient<INguoiDung, NguoiDungSvc>();
             services.AddTransient<IGiangVien, GiangVienSvc>();
-            //services.AddTransient<IDiem, DiemSvc>();
-            //services.AddTransient<IHocPhi, HocPhiSvc>();
-            //services.AddTransient<IKhoaHoc, KhoaHocSvc>();
-            //services.AddTransient<ILoaiDiem, LoaiDiemSvc>();
-            //services.AddTransient<ILopHoc, LopHocSvc>();
-            //services.AddTransient<IMonHoc, MonHocSvc>();
-            //services.AddTransient<IThoiKhoaBieu, ThoiKhoaBieuSvc>();
-            //services.AddTransient<IToBoMon, ToBoMonSvc>();
+            services.AddTransient<IDiem, DiemSvc>();
+            services.AddTransient<IHocPhi, HocPhiSvc>();
+            services.AddTransient<IKhoaHoc, KhoaHocSvc>();
+            services.AddTransient<ILoaiDiem, LoaiDiemSvc>();
+            services.AddTransient<ILopHoc, LopHocSvc>();
+            services.AddTransient<IMonHoc, MonHocSvc>();
+            services.AddTransient<IThoiKhoaBieu, ThoiKhoaBieuSvc>();
+            services.AddTransient<IToBoMon, ToBoMonSvc>();
+           
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

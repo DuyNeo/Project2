@@ -9,26 +9,27 @@ namespace Project2.Services
 {
     public interface IGiangVien
     {
-        public Task<List<GiangVien>> GetGiangvienAllAsync();
-        public Task<bool> EditGiangvienAsync(int id, GiangVien giangVien);
-        public Task<int> AddGiangvienAsync(GiangVien giangVien);
-        public Task<GiangVien> GetGiangvienAsync(int? id);
+         Task<List<GiangVien>> GetGiangvienAllAsync();
+         Task<bool> EditGiangvienAsync(int id, GiangVien giangVien);
+         Task<int> AddGiangvienAsync(GiangVien giangVien);
+         Task<GiangVien> GetGiangvienAsync(int? id);
     }
     public class GiangVienSvc:IGiangVien
     {
-        protected DataContext _context;
+        private readonly DataContext _context;
         public GiangVienSvc(DataContext context)
         {
             _context = context;
         }
 
-        public  Task<int> AddGiangvienAsync(GiangVien giangVien)
+        public async Task<int> AddGiangvienAsync(GiangVien giangVien)
         {
             int ret = 0;
             try 
             {
-                _context.Add(giangVien);
-                 _context.SaveChangesAsync();
+                //giangVien.role.roleId =  1  ;
+                await _context.AddAsync(giangVien);
+                await _context.SaveChangesAsync();
                 ret = giangVien.gvId;
             }
             catch
@@ -36,10 +37,10 @@ namespace Project2.Services
                 ret = 0;
             }
           
-            return Task.FromResult(ret);
+            return ret;
         }
 
-        public async Task<bool> EditGiangvienAsync(int id, GiangVien giangVien)
+        public async Task<bool> EditGiangvienAsync(int id,GiangVien giangVien)
         {
             _context.Update(giangVien);
             await _context.SaveChangesAsync();

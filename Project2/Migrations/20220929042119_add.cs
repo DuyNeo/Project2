@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Project2.Migrations
 {
-    public partial class quanli : Migration
+    public partial class add : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -195,8 +195,6 @@ namespace Project2.Migrations
                     monHocChinh = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     monKienNhiem = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     matKhau = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: true),
-                    Role = table.Column<int>(type: "int", nullable: false),
-                    roleId = table.Column<int>(type: "int", nullable: true),
                     lopHocId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
@@ -207,12 +205,6 @@ namespace Project2.Migrations
                         column: x => x.lopHocId,
                         principalTable: "lopHocs",
                         principalColumn: "lopHocId",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_giangViens_roles_roleId",
-                        column: x => x.roleId,
-                        principalTable: "roles",
-                        principalColumn: "roleId",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -298,11 +290,6 @@ namespace Project2.Migrations
                 column: "lopHocId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_giangViens_roleId",
-                table: "giangViens",
-                column: "roleId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_hocPhis_hocPhiNguoiDungId",
                 table: "hocPhis",
                 column: "hocPhiNguoiDungId");
@@ -350,6 +337,9 @@ namespace Project2.Migrations
                 name: "hocPhis");
 
             migrationBuilder.DropTable(
+                name: "roles");
+
+            migrationBuilder.DropTable(
                 name: "thoiKhoaBieus");
 
             migrationBuilder.DropTable(
@@ -357,9 +347,6 @@ namespace Project2.Migrations
 
             migrationBuilder.DropTable(
                 name: "lopHocs");
-
-            migrationBuilder.DropTable(
-                name: "roles");
 
             migrationBuilder.DropTable(
                 name: "monHocs");

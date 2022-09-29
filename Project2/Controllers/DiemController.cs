@@ -21,9 +21,9 @@ namespace Project2.Controllers
             _context = context;
             _Diem = Diem;
         }
-    
+
         [HttpPost]
-        [Route("Add")]
+        
         public async Task<ActionResult<int>> AddDiemAsync(Diem Diem)
         {
             try
@@ -38,14 +38,14 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListDiem")]
-        public async Task<ActionResult<IEquatable<Diem>>> GetDiemAllAsync()
+        public async Task<ActionResult<IEnumerable<Diem>>> GetDiemAllAsync()
         {
-             await _Diem.GetDiemAllAsync();
-            return Ok();            
+            return await _Diem.GetDiemAllAsync();
+            //return Ok();
         }
 
         [HttpPut("{id}")]
-        [Route("Update")]
+        
 
         public async Task<IActionResult> PutDiem(int id, Diem Diem)
         {
@@ -87,7 +87,7 @@ namespace Project2.Controllers
 
         }
         [HttpDelete("{id}")]
-        [Route("Delete")]
+      
         public async Task<IActionResult> DeleteMonAn(int id)
         {
             var monAn = await _context.diems.FindAsync(id);

@@ -23,12 +23,15 @@ namespace Project2.Controllers
         }
     
         [HttpPost]
-        [Route("AddS")]
+        [Route("Add")]
         public async Task<ActionResult<int>> AddGiangVienAsync(GiangVien GiangVien)
         {
             try
             {
+
                 await _GiangVien.AddGiangvienAsync(GiangVien);
+                Console.WriteLine("thanh cong");
+
             }
             catch (Exception ex)
             {
@@ -38,14 +41,13 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListGiangVien")]
-        public async Task<ActionResult<IEquatable<GiangVien>>> GetGiangVienAllAsync()
+        public async Task<ActionResult<IEnumerable<GiangVien>>> GetGiangVienAllAsync()
         {
-             await _GiangVien.GetGiangvienAllAsync();
-            return Ok();            
+            return await _GiangVien.GetGiangvienAllAsync();
+                         
         }
 
         [HttpPut("{id}")]
-        [Route("Update")]
 
         public async Task<IActionResult> PutGiangVien(int id, GiangVien GiangVien)
         {
@@ -87,7 +89,6 @@ namespace Project2.Controllers
 
         }
         [HttpDelete("{id}")]
-        [Route("Delete")]
 
         public async Task<IActionResult> DeleteGv(int id)
         {

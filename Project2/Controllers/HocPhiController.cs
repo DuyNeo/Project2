@@ -21,9 +21,9 @@ namespace Project2.Controllers
             _context = context;
             _HocPhi = HocPhi;
         }
-    
+
         [HttpPost]
-        [Route("Add")]
+       
         public async Task<ActionResult<int>> AddHocPhiAsync(HocPhi HocPhi)
         {
             try
@@ -38,14 +38,14 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListHocPhi")]
-        public async Task<ActionResult<IEquatable<HocPhi>>> GetHocPhiAllAsync()
+        public async Task<ActionResult<IEnumerable<HocPhi>>> GetHocPhiAllAsync()
         {
-             await _HocPhi.GetHocphiAllAsync();
-            return Ok();            
+            return await _HocPhi.GetHocphiAllAsync();
+            //return Ok();
         }
 
         [HttpPut("{id}")]
-        [Route("Update")]
+      
 
         public async Task<IActionResult> PutHocPhi(int id, HocPhi HocPhi)
         {
@@ -87,7 +87,7 @@ namespace Project2.Controllers
 
         }
         [HttpDelete("{id}")]
-        [Route("Delete")]
+       
 
         public async Task<IActionResult> DeleteHocPhi(int id)
         {

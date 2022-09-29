@@ -79,9 +79,6 @@ namespace Project2.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("Role")
-                        .HasColumnType("int");
-
                     b.Property<string>("Ten")
                         .HasColumnType("nvarchar(max)");
 
@@ -113,9 +110,6 @@ namespace Project2.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("roleId")
-                        .HasColumnType("int");
-
                     b.Property<string>("soDienThoai")
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)");
@@ -123,8 +117,6 @@ namespace Project2.Migrations
                     b.HasKey("gvId");
 
                     b.HasIndex("lopHocId");
-
-                    b.HasIndex("roleId");
 
                     b.ToTable("giangViens");
                 });
@@ -300,6 +292,52 @@ namespace Project2.Migrations
                     b.ToTable("monHocs");
                 });
 
+            modelBuilder.Entity("Project2.Models.NguoiDung", b =>
+                {
+                    b.Property<int>("idNguoiDung")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("DOB")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<bool>("IsAdmin")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Locked")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("chucDanh")
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("gioiTinh")
+                        .HasColumnType("int");
+
+                    b.Property<string>("matKhau")
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<string>("tenDaydu")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("tenNguoiDung")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("idNguoiDung");
+
+                    b.ToTable("nguoiDungs");
+                });
+
             modelBuilder.Entity("Project2.Models.Role", b =>
                 {
                     b.Property<int>("roleId")
@@ -386,52 +424,6 @@ namespace Project2.Migrations
                     b.ToTable("toBoMons");
                 });
 
-            modelBuilder.Entity("QLHS.Models.NguoiDung", b =>
-                {
-                    b.Property<int>("idNguoiDung")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime?>("DOB")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<bool>("IsAdmin")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("Locked")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("chucDanh")
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<int>("gioiTinh")
-                        .HasColumnType("int");
-
-                    b.Property<string>("matKhau")
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("tenDaydu")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("tenNguoiDung")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("idNguoiDung");
-
-                    b.ToTable("nguoiDungs");
-                });
-
             modelBuilder.Entity("Project2.Models.Diem", b =>
                 {
                     b.HasOne("Project2.Models.MonHoc", "monHoc")
@@ -455,18 +447,12 @@ namespace Project2.Migrations
                         .WithMany()
                         .HasForeignKey("lopHocId");
 
-                    b.HasOne("Project2.Models.Role", "role")
-                        .WithMany()
-                        .HasForeignKey("roleId");
-
                     b.Navigation("lopHoc");
-
-                    b.Navigation("role");
                 });
 
             modelBuilder.Entity("Project2.Models.HocPhi", b =>
                 {
-                    b.HasOne("QLHS.Models.NguoiDung", "nguoiDung")
+                    b.HasOne("Project2.Models.NguoiDung", "nguoiDung")
                         .WithMany()
                         .HasForeignKey("hocPhiNguoiDungId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -477,7 +463,7 @@ namespace Project2.Migrations
 
             modelBuilder.Entity("Project2.Models.LopHoc", b =>
                 {
-                    b.HasOne("QLHS.Models.NguoiDung", "nguoiDung")
+                    b.HasOne("Project2.Models.NguoiDung", "nguoiDung")
                         .WithMany()
                         .HasForeignKey("Lop")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -509,7 +495,7 @@ namespace Project2.Migrations
 
             modelBuilder.Entity("Project2.Models.ThoiKhoaBieu", b =>
                 {
-                    b.HasOne("QLHS.Models.NguoiDung", "nguoiDung")
+                    b.HasOne("Project2.Models.NguoiDung", "nguoiDung")
                         .WithMany()
                         .HasForeignKey("ScheduleUser")
                         .OnDelete(DeleteBehavior.Cascade)

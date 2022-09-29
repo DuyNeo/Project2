@@ -24,11 +24,13 @@ namespace Project2.Controllers
     
         [HttpPost]
         [Route("AddStudent")]
-        public async Task<ActionResult<int>> AddNguoiDungAsync(NguoiDung NguoiDung)
+        public async Task<ActionResult<int>> AddNguoiDungAsync(NguoiDung NguoiDung) 
         {
             try
             {
                 await _NguoiDung.AddNguoidungAsync(NguoiDung);
+                Console.WriteLine("thanh cong");
+
             }
             catch (Exception ex)
             {
@@ -56,8 +58,7 @@ namespace Project2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
+            
 
 
             try
@@ -96,7 +97,7 @@ namespace Project2.Controllers
             _context.nguoiDungs.Remove(nguoiDung);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok();
         }
 
     }

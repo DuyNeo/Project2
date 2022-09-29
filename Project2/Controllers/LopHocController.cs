@@ -21,9 +21,8 @@ namespace Project2.Controllers
             _context = context;
             _LopHoc = LopHoc;
         }
-    
+
         [HttpPost]
-        [Route("Add")]
         public async Task<ActionResult<int>> AddLopHocAsync(LopHoc LopHoc)
         {
             try
@@ -38,14 +37,13 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListLopHoc")]
-        public async Task<ActionResult<IEquatable<LopHoc>>> GetLopHocAllAsync()
+        public async Task<ActionResult<IEnumerable<LopHoc>>> GetLopHocAllAsync()
         {
-             await _LopHoc.GetLophocAllAsync();
-            return Ok();            
+           return await _LopHoc.GetLophocAllAsync();
+            
         }
 
         [HttpPut("{id}")]
-        [Route("Update")]
 
         public async Task<IActionResult> PutLopHoc(int id, LopHoc lopHoc)
         {
@@ -87,7 +85,6 @@ namespace Project2.Controllers
 
         }
         [HttpDelete("{id}")]
-        [Route("Delete")]
 
         public async Task<IActionResult> DeleteLopHoc(int id)
         {

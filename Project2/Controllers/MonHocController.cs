@@ -12,22 +12,22 @@ namespace Project2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ToBoMonController : ControllerBase
+    public class MonHocController : ControllerBase
     {
-        private readonly IToBoMon _ToBoMon;
+        private readonly IMonHoc _MonHoc;
         private readonly DataContext _context;
-        public ToBoMonController(IToBoMon ToBoMon, DataContext context)
+        public MonHocController(IMonHoc MonHoc, DataContext context)
         {
             _context = context;
-            _ToBoMon = ToBoMon;
+            _MonHoc = MonHoc;
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddToBoMonAsync(ToBoMon ToBoMon)
+        public async Task<ActionResult<int>> AddMonHocAsync(MonHoc MonHoc)
         {
             try
             {
-                await _ToBoMon.AddToBoMonAsync(ToBoMon);
+                await _MonHoc.AddMonhocAsync(MonHoc);
             }
             catch (Exception ex)
             {
@@ -36,18 +36,18 @@ namespace Project2.Controllers
             return Ok(1);
         }
         [HttpGet]
-        [Route("ListToBoMon")]
-        public async Task<ActionResult<IEnumerable<ToBoMon>>> GetToBoMonAllAsync()
+        [Route("ListMonHoc")]
+        public async Task<ActionResult<IEnumerable<MonHoc>>> GetMonHocAllAsync()
         {
-            return await _ToBoMon.GetToBoMonAllAsync();
+            return await _MonHoc.GetMonhocAllAsync();
             //return Ok();
         }
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutToBoMon(int id, ToBoMon ToBoMon)
+        public async Task<IActionResult> PutMonHoc(int id, MonHoc MonHoc)
         {
-            if (id != ToBoMon.toBoMonId)
+            if (id != MonHoc.monHocId)
             {
                 return BadRequest();
             }
@@ -62,12 +62,12 @@ namespace Project2.Controllers
 
             try
             {
-                await _ToBoMon.EditToBoMonAsync(id, ToBoMon);
+                await _MonHoc.EditMonhocAsync(id, MonHoc);
                 //await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!ToBoMonExists(id))
+                if (!MonHocExists(id))
                 {
                     return NotFound();
                 }
@@ -77,24 +77,24 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_ToBoMon.GetToBoMonAsync(id));
+            return Ok(_MonHoc.GetMonhocAsync(id));
         }
-        private bool ToBoMonExists(int id)
+        private bool MonHocExists(int id)
         {
-            return _context.toBoMons.Any(e => e.toBoMonId == id);
+            return _context.monHocs.Any(e => e.monHocId == id);
 
         }
         [HttpDelete("{id}")]
 
-        public async Task<IActionResult> DeleteToBoMon(int id)
+        public async Task<IActionResult> DeletemonHoc(int id)
         {
-            var toBoMon = await _context.toBoMons.FindAsync(id);
-            if (toBoMon == null)
+            var monHoc = await _context.monHocs.FindAsync(id);
+            if (monHoc == null)
             {
                 return NotFound();
             }
 
-            _context.toBoMons.Remove(toBoMon);
+            _context.monHocs.Remove(monHoc);
             await _context.SaveChangesAsync();
 
             return NoContent();

@@ -21,9 +21,9 @@ namespace Project2.Controllers
             _context = context;
             _KhoaHoc = KhoaHoc;
         }
-    
+
         [HttpPost]
-        [Route("Add")]
+       
         public async Task<ActionResult<int>> AddKhoaHocAsync(KhoaHoc KhoaHoc)
         {
             try
@@ -38,15 +38,14 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListKhoaHoc")]
-        public async Task<ActionResult<IEquatable<KhoaHoc>>> GetKhoaHocAllAsync()
+        public async Task<ActionResult<IEnumerable<KhoaHoc>>> GetKhoaHocAllAsync()
         {
-             await _KhoaHoc.GetKhoahocAllAsync();
-            return Ok();            
+            return await _KhoaHoc.GetKhoahocAllAsync();
+            //return Ok();
         }
 
         [HttpPut("{id}")]
-        [Route("Update")]
-
+        
         public async Task<IActionResult> PutKhoaHoc(int id, KhoaHoc KhoaHoc)
         {
             if (id != KhoaHoc.khoaHocId)
@@ -87,7 +86,7 @@ namespace Project2.Controllers
 
         }
         [HttpDelete("{id}")]
-        [Route("Delete")]
+       
 
         public async Task<IActionResult> DeletekhoaHoc(int id)
         {
