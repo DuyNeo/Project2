@@ -10,10 +10,10 @@ namespace Project2.Services
     public interface IHocPhi
     {
         
-        public Task<List<HocPhi>> GetHocphiAllAsync();
-        public Task<bool> EditHocphiAsync(int id, HocPhi hocPhi);
-        public Task<bool> AddHocphiAsync(HocPhi hocPhi);
-        public Task<HocPhi> GetHocphiAsync(int? id);
+        public Task<List<Tuition>> GetHocphiAllAsync();
+        public Task<bool> EditHocphiAsync(int id, Tuition hocPhi);
+        public Task<bool> AddHocphiAsync(Tuition hocPhi);
+        public Task<Tuition> GetHocphiAsync(int? id);
     }
     public class HocPhiSvc: IHocPhi
     {
@@ -23,30 +23,30 @@ namespace Project2.Services
             _context = context;
         }
 
-        public async Task<bool> AddHocphiAsync(HocPhi hocPhi)
+        public async Task<bool> AddHocphiAsync(Tuition hocPhi)
         {
             _context.Add(hocPhi);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> EditHocphiAsync(int id, HocPhi hocPhi)
+        public async Task<bool> EditHocphiAsync(int id, Tuition hocPhi)
         {
             _context.Update(hocPhi);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<HocPhi>> GetHocphiAllAsync()
+        public async Task<List<Tuition>> GetHocphiAllAsync()
         {
-            var dataContext = _context.hocPhis;
+            var dataContext = _context.tuitions;
             return await dataContext.ToListAsync();
         }
 
-        public async Task<HocPhi> GetHocphiAsync(int? id)
+        public async Task<Tuition> GetHocphiAsync(int? id)
         {
-            var hocphi = await _context.hocPhis
-                .FirstOrDefaultAsync(m => m.hocPhiId == id);
+            var hocphi = await _context.tuitions
+                .FirstOrDefaultAsync(m => m.TuitionId == id);
             if(hocphi == null)
             {
                 return null;

@@ -23,7 +23,7 @@ namespace Project2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddLoaiDiemAsync(LoaiDiem LoaiDiem)
+        public async Task<ActionResult<int>> AddLoaiDiemAsync(PointType LoaiDiem)
         {
             try
             {
@@ -33,11 +33,15 @@ namespace Project2.Controllers
             {
                 Console.WriteLine("loi ne" + ex);
             }
-            return Ok(1);
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Thêm thành công"
+            });
         }
         [HttpGet]
         [Route("ListLoaiDiem")]
-        public async Task<ActionResult<IEnumerable<LoaiDiem>>> GetLoaiDiemAllAsync()
+        public async Task<ActionResult<IEnumerable<PointType>>> GetLoaiDiemAllAsync()
         {
             return await _LoaiDiem.GetLoaidiemAllAsync();
             //return Ok();
@@ -45,25 +49,27 @@ namespace Project2.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutLoaiDiem(int id, LoaiDiem LoaiDiem)
+        public async Task<IActionResult> PutLoaiDiem(int id, PointType LoaiDiem)
         {
-            if (id != LoaiDiem.loaiDiemId)
+            if (id != LoaiDiem.PointTypeId)
             {
-                return BadRequest();
-            }
+                return BadRequest(new {
+                    retCode = 0,
+                    retText="Thất bại"
+                });
+                
 
+            }
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
+           
 
 
             try
             {
                 await _LoaiDiem.EditLoaidiemAsync(id, LoaiDiem);
-                //await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -77,27 +83,36 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_LoaiDiem.GetLoaidiemAsync(id));
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Sửa thành công"
+            });
         }
         private bool LoaiDiemExists(int id)
         {
-            return _context.loaiDiems.Any(e => e.loaiDiemId == id);
+            return _context.pointTypes.Any(e => e.PointTypeId == id);
 
         }
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteloaiDiem(int id)
         {
-            var loaiDiem = await _context.loaiDiems.FindAsync(id);
+            var loaiDiem = await _context.pointTypes.FindAsync(id);
             if (loaiDiem == null)
             {
                 return NotFound();
             }
 
-            _context.loaiDiems.Remove(loaiDiem);
+            _context.pointTypes.Remove(loaiDiem);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(
+                 new
+                 {
+                     retCode = 1,
+                     retText = "Xóa thành công"
+                 });
         }
 
     }

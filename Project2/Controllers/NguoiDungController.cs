@@ -21,35 +21,69 @@ namespace Project2.Controllers
             _context = context;
             _NguoiDung = NguoiDung;
         }
-    
-        [HttpPost]
-        [Route("AddStudent")]
-        public async Task<ActionResult<int>> AddNguoiDungAsync(NguoiDung NguoiDung) 
+
+        //[HttpPost]
+        //[Route("AddStudent")]
+        //public async Task<ActionResult<int>> AddNguoiDungAsync(Users NguoiDung) 
+        //{
+        //    try
+        //    {
+        //        await _NguoiDung.AddNguoidungAsync(NguoiDung);
+        //        Console.WriteLine("thanh cong");
+
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine("loi ne" + ex);
+        //    }
+        //    return Ok(1);
+        //}
+        [HttpPost, ActionName("teacher")]
+        public async Task<IActionResult> PostAsync(Users users)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _NguoiDung.AddNguoidungAsync(NguoiDung);
-                Console.WriteLine("thanh cong");
+                if (await _NguoiDung.isEmail(users.Email))
+                {
+                    return Ok(new
+                    {
+                        retCode = 0,
+                        retText = "Email đã tồn tại",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    if (await _NguoiDung.AddNguoidungAsync(users))
+                    {
+                        return Ok(new
+                        {
+                            retCode = 1,
+                            retText = "successfuly",
+                            data = await _NguoiDung.GetNguoidungAsync(users.UserId)
+                        });
+                    }
+                }
 
             }
-            catch (Exception ex)
+            return Ok(new
             {
-                Console.WriteLine("loi ne" + ex);
-            }
-            return Ok(1);
+                retCode = 0,
+                retText = "failure"
+            });
         }
         [HttpGet]
         [Route("ListNguoiDung")]
-        public async Task<ActionResult<IEnumerable<NguoiDung>>> GetNguoiDungAllAsync()
+        public async Task<ActionResult<IEnumerable<Users>>> GetNguoiDungAllAsync()
         {
              
             return await _NguoiDung.GetNguoidungAllAsync(); ;           
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutNguoiDung(int id, NguoiDung NguoiDung)
+        public async Task<IActionResult> PutNguoiDung(int id, Users NguoiDung)
         {
-            if (id != NguoiDung.idNguoiDung)
+            if (id != NguoiDung.UserId)
             {
                 return BadRequest();
             }
@@ -58,13 +92,13 @@ namespace Project2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            
+
 
 
             try
             {
                 await _NguoiDung.EditNguoidungAsync(id, NguoiDung);
-                //await _context.SaveChangesAsync();
+
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -78,23 +112,30 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_NguoiDung.GetNguoidungAsync(id));
+            return Ok(new
+            {
+                //_NguoiDung.GetNguoidungAsync(id),
+                retCode = 0,
+                retText = "Update thanh cong"
+            });
+
         }
         private bool NguoiDungExists(int id)
         {
-            return _context.nguoiDungs.Any(e => e.idNguoiDung == id);
+            return _context.users.Any(e => e.UserId == id);
 
         }
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeletenguoiDung(int id)
         {
-            var nguoiDung = await _context.nguoiDungs.FindAsync(id);
+            var nguoiDung = await _context.users.FindAsync(id);
             if (nguoiDung == null)
             {
                 return NotFound();
+
             }
 
-            _context.nguoiDungs.Remove(nguoiDung);
+            _context.users.Remove(nguoiDung);
             await _context.SaveChangesAsync();
 
             return Ok();

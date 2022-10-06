@@ -46,6 +46,7 @@ namespace Project2
             services.AddTransient<IMonHoc, MonHocSvc>();
             services.AddTransient<IThoiKhoaBieu, ThoiKhoaBieuSvc>();
             services.AddTransient<IToBoMon, ToBoMonSvc>();
+            services.AddTransient<IMaHoaHelper, MahoaHelper>();
            
         }
 

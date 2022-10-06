@@ -8,10 +8,10 @@ namespace Project2.Services
 {
     public interface IDiem
     {
-        public Task<List<Diem>> GetDiemAllAsync();
-        public Task<bool> EditDiemAsync(int id, Diem diem);
-        public Task<bool> AddDiemAsync(Diem diem);
-        public Task<Diem> GetDiemAsync(int? id);
+        public Task<List<Score>> GetDiemAllAsync();
+        public Task<bool> EditDiemAsync(int id, Score diem);
+        public Task<bool> AddDiemAsync(Score diem);
+        public Task<Score> GetDiemAsync(int? id);
     }
     public class DiemSvc:IDiem
     {
@@ -21,30 +21,30 @@ namespace Project2.Services
             _context = context;
         }
 
-        public async Task<bool> AddDiemAsync(Diem diem)
+        public async Task<bool> AddDiemAsync(Score diem)
         {
             _context.Add(diem);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> EditDiemAsync(int id, Diem diem)
+        public async Task<bool> EditDiemAsync(int id, Score diem)
         {
             _context.Update(diem);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<Diem>> GetDiemAllAsync()
+        public async Task<List<Score>> GetDiemAllAsync()
         {
-            var dataContext = _context.diems;
+            var dataContext = _context.scores;
             return await dataContext.ToListAsync();
         }
 
-        public async Task<Diem> GetDiemAsync(int? id)
+        public async Task<Score> GetDiemAsync(int? id)
         {
-            var diem = await _context.diems
-               .FirstOrDefaultAsync(m => m.diemId == id);
+            var diem = await _context.scores
+               .FirstOrDefaultAsync(m => m.ScoreId == id);
             if(diem == null)
             {
                 return null;

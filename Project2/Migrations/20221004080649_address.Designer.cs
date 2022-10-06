@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Project2.Models;
 
 namespace Project2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221004080649_address")]
+    partial class address
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -202,25 +204,31 @@ namespace Project2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<float>("Diem")
-                        .HasColumnType("real");
-
-                    b.Property<int>("PointTypeId")
+                    b.Property<int?>("loaiDiemPointTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("SubjectsId")
+                    b.Property<int>("soCotDiem")
                         .HasColumnType("int");
 
-                    b.Property<int>("UserId")
+                    b.Property<int>("soCotDiemBatBuoc")
                         .HasColumnType("int");
+
+                    b.Property<string>("sourseName")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.Property<int>("subjectScore")
+                        .HasColumnType("int");
+
+                    b.Property<string>("subjectsName")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("ScoreId");
 
-                    b.HasIndex("PointTypeId");
+                    b.HasIndex("loaiDiemPointTypeId");
 
-                    b.HasIndex("SubjectsId");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("subjectScore");
 
                     b.ToTable("scores");
                 });
@@ -232,10 +240,13 @@ namespace Project2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("CourseId")
+                    b.Property<int?>("CourseId")
                         .HasColumnType("int");
 
-                    b.Property<int>("DepartmentId")
+                    b.Property<int?>("DepartmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Subject")
                         .HasColumnType("int");
 
                     b.Property<string>("SubjectCode")
@@ -245,6 +256,9 @@ namespace Project2.Migrations
                     b.Property<string>("SubjectName")
                         .HasMaxLength(30)
                         .HasColumnType("nvarchar(30)");
+
+                    b.Property<int>("boMonHoc")
+                        .HasColumnType("int");
 
                     b.HasKey("SubjectId");
 
@@ -301,9 +315,6 @@ namespace Project2.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
 
-                    b.Property<int>("RoleId")
-                        .HasColumnType("int");
-
                     b.Property<int>("TaxCode")
                         .HasColumnType("int");
 
@@ -315,8 +326,6 @@ namespace Project2.Migrations
                         .HasColumnType("nvarchar(20)");
 
                     b.HasKey("TeachersId");
-
-                    b.HasIndex("RoleId");
 
                     b.ToTable("teachers");
                 });
@@ -439,59 +448,34 @@ namespace Project2.Migrations
 
             modelBuilder.Entity("Project2.Models.Score", b =>
                 {
-                    b.HasOne("Project2.Models.PointType", "pointTypes")
-                        .WithMany("scores")
-                        .HasForeignKey("PointTypeId")
+                    b.HasOne("Project2.Models.PointType", "loaiDiem")
+                        .WithMany()
+                        .HasForeignKey("loaiDiemPointTypeId");
+
+                    b.HasOne("Project2.Models.Subjects", "monHoc")
+                        .WithMany()
+                        .HasForeignKey("subjectScore")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Project2.Models.Subjects", "subjects")
-                        .WithMany("scores")
-                        .HasForeignKey("SubjectsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("loaiDiem");
 
-                    b.HasOne("Project2.Models.Users", "users")
-                        .WithMany("scores")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("pointTypes");
-
-                    b.Navigation("subjects");
-
-                    b.Navigation("users");
+                    b.Navigation("monHoc");
                 });
 
             modelBuilder.Entity("Project2.Models.Subjects", b =>
                 {
                     b.HasOne("Project2.Models.Course", "course")
-                        .WithMany("subjects")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("CourseId");
 
                     b.HasOne("Project2.Models.Department", "department")
-                        .WithMany("subjects")
-                        .HasForeignKey("DepartmentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("DepartmentId");
 
                     b.Navigation("course");
 
                     b.Navigation("department");
-                });
-
-            modelBuilder.Entity("Project2.Models.Teachers", b =>
-                {
-                    b.HasOne("Project2.Models.Role", "Role")
-                        .WithMany("teachers")
-                        .HasForeignKey("RoleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("Project2.Models.Tuition", b =>
@@ -528,36 +512,9 @@ namespace Project2.Migrations
                     b.Navigation("users");
                 });
 
-            modelBuilder.Entity("Project2.Models.Course", b =>
-                {
-                    b.Navigation("subjects");
-                });
-
-            modelBuilder.Entity("Project2.Models.Department", b =>
-                {
-                    b.Navigation("subjects");
-                });
-
-            modelBuilder.Entity("Project2.Models.PointType", b =>
-                {
-                    b.Navigation("scores");
-                });
-
             modelBuilder.Entity("Project2.Models.Role", b =>
                 {
-                    b.Navigation("teachers");
-
                     b.Navigation("users");
-                });
-
-            modelBuilder.Entity("Project2.Models.Subjects", b =>
-                {
-                    b.Navigation("scores");
-                });
-
-            modelBuilder.Entity("Project2.Models.Users", b =>
-                {
-                    b.Navigation("scores");
                 });
 #pragma warning restore 612, 618
         }

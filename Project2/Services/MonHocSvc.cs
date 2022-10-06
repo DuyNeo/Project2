@@ -8,10 +8,10 @@ namespace Project2.Services
 {
     public interface IMonHoc
     {
-        public Task<List<MonHoc>> GetMonhocAllAsync();
-        public Task<bool> EditMonhocAsync(int id, MonHoc monHoc);
-        public Task<bool> AddMonhocAsync(MonHoc monHoc);
-        public Task<MonHoc> GetMonhocAsync(int? id);
+        public Task<List<Subjects>> GetMonhocAllAsync();
+        public Task<bool> EditMonhocAsync(int id, Subjects monHoc);
+        public Task<bool> AddMonhocAsync(Subjects monHoc);
+        public Task<Subjects> GetMonhocAsync(int? id);
     }
     public class MonHocSvc : IMonHoc
     {
@@ -20,30 +20,30 @@ namespace Project2.Services
         {
             _context = context; 
         }
-        public async Task<bool> AddMonhocAsync(MonHoc monHoc)
+        public async Task<bool> AddMonhocAsync(Subjects monHoc)
         {
             _context.Add(monHoc);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> EditMonhocAsync(int id, MonHoc monHoc)
+        public async Task<bool> EditMonhocAsync(int id, Subjects monHoc)
         {
             _context.Update(monHoc);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<MonHoc>> GetMonhocAllAsync()
+        public async Task<List<Subjects>> GetMonhocAllAsync()
         {
-            var dataContext = _context.monHocs;
+            var dataContext = _context.subjects;
             return await dataContext.ToListAsync();
         }
 
-        public async Task<MonHoc> GetMonhocAsync(int? id)
+        public async Task<Subjects> GetMonhocAsync(int? id)
         {
-            var monHoc = await _context.monHocs
-                .FirstOrDefaultAsync(m => m.monHocId == id);
+            var monHoc = await _context.subjects
+                .FirstOrDefaultAsync(m => m.SubjectId == id);
             if(monHoc == null)
             {
                 return null;

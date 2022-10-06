@@ -22,22 +22,34 @@ namespace Project2.Controllers
             _LopHoc = LopHoc;
         }
 
+        
         [HttpPost]
-        public async Task<ActionResult<int>> AddLopHocAsync(LopHoc LopHoc)
+        public async Task<ActionResult<bool>> AddLopHocAsync(Class LopHoc)
         {
-            try
+            if (ModelState.IsValid)
             {
-                await _LopHoc.AddLophocAsync(LopHoc);
+                if (await _LopHoc.AddLophocAsync(LopHoc))
+                {
+                    return Ok(new
+                    {
+                        retCode = 1,
+                        retText = "successfuly"
+                    });
+                }
             }
-            catch (Exception ex)
+            return Ok(new
             {
-                Console.WriteLine("loi ne" + ex);
-            }
-            return Ok(1);
+                retCode = 0,
+                retText ="Quá trời lỗi luôn",
+               
+                
+            });
         }
+
+       
         [HttpGet]
         [Route("ListLopHoc")]
-        public async Task<ActionResult<IEnumerable<LopHoc>>> GetLopHocAllAsync()
+        public async Task<ActionResult<IEnumerable<Class>>> GetLopHocAllAsync()
         {
            return await _LopHoc.GetLophocAllAsync();
             
@@ -45,9 +57,9 @@ namespace Project2.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutLopHoc(int id, LopHoc lopHoc)
+        public async Task<IActionResult> PutLopHoc(int id, Class lopHoc)
         {
-            if (id != lopHoc.lopHocId)
+            if (id != lopHoc.ClassId)
             {
                 return BadRequest();
             }
@@ -55,11 +67,6 @@ namespace Project2.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
-
-
             try
             {
                 await _LopHoc.EditLophocAsync(id, lopHoc);
@@ -77,27 +84,35 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_LopHoc.GetLophocAsync(id));
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Sửa thành công"
+            });
         }
         private bool LopHocExists(int id)
         {
-            return _context.lopHocs.Any(e => e.lopHocId == id);
+            return _context.classes.Any(e => e.ClassId == id);
 
         }
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteLopHoc(int id)
         {
-            var lopHoc = await _context.lopHocs.FindAsync(id);
+            var lopHoc = await _context.classes.FindAsync(id);
             if (lopHoc == null)
             {
                 return NotFound();
             }
 
-            _context.lopHocs.Remove(lopHoc);
+            _context.classes.Remove(lopHoc);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Xóa thành công"
+            });
         }
 
     }

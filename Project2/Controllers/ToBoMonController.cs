@@ -23,7 +23,7 @@ namespace Project2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddToBoMonAsync(ToBoMon ToBoMon)
+        public async Task<ActionResult<int>> AddToBoMonAsync(Department ToBoMon)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListToBoMon")]
-        public async Task<ActionResult<IEnumerable<ToBoMon>>> GetToBoMonAllAsync()
+        public async Task<ActionResult<IEnumerable<Department>>> GetToBoMonAllAsync()
         {
             return await _ToBoMon.GetToBoMonAllAsync();
             //return Ok();
@@ -45,9 +45,9 @@ namespace Project2.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutToBoMon(int id, ToBoMon ToBoMon)
+        public async Task<IActionResult> PutToBoMon(int id, Department ToBoMon)
         {
-            if (id != ToBoMon.toBoMonId)
+            if (id != ToBoMon.DepartmentId)
             {
                 return BadRequest();
             }
@@ -81,20 +81,20 @@ namespace Project2.Controllers
         }
         private bool ToBoMonExists(int id)
         {
-            return _context.toBoMons.Any(e => e.toBoMonId == id);
+            return _context.departments.Any(e => e.DepartmentId == id);
 
         }
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteToBoMon(int id)
         {
-            var toBoMon = await _context.toBoMons.FindAsync(id);
+            var toBoMon = await _context.departments.FindAsync(id);
             if (toBoMon == null)
             {
                 return NotFound();
             }
 
-            _context.toBoMons.Remove(toBoMon);
+            _context.departments.Remove(toBoMon);
             await _context.SaveChangesAsync();
 
             return NoContent();

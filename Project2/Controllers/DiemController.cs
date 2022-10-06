@@ -24,7 +24,7 @@ namespace Project2.Controllers
 
         [HttpPost]
         
-        public async Task<ActionResult<int>> AddDiemAsync(Diem Diem)
+        public async Task<ActionResult<int>> AddDiemAsync(Score Diem)
         {
             try
             {
@@ -34,22 +34,27 @@ namespace Project2.Controllers
             {
                 Console.WriteLine("loi ne" + ex);
             }
-            return Ok(1);
+            return Ok(
+                 new
+                 {
+                     retCode = 1,
+                     retText = "Thêm thành công"
+                 });
         }
         [HttpGet]
         [Route("ListDiem")]
-        public async Task<ActionResult<IEnumerable<Diem>>> GetDiemAllAsync()
+        public async Task<ActionResult<IEnumerable<Score>>> GetDiemAllAsync()
         {
             return await _Diem.GetDiemAllAsync();
-            //return Ok();
+            
         }
 
         [HttpPut("{id}")]
         
 
-        public async Task<IActionResult> PutDiem(int id, Diem Diem)
+        public async Task<IActionResult> PutDiem(int id, Score Diem)
         {
-            if (id != Diem.diemId)
+            if (id != Diem.ScoreId)
             {
                 return BadRequest();
             }
@@ -58,14 +63,10 @@ namespace Project2.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
-
-
             try
             {
                 await _Diem.EditDiemAsync(id, Diem);
-                //await _context.SaveChangesAsync();
+                
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,27 +80,38 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_Diem.GetDiemAsync(id));
+            return Ok(
+                new
+                {
+                    retCode = 1,
+                    retText = "Sửa điểm thành công"
+                }   
+                ) ;
         }
         private bool DiemExists(int id)
         {
-            return _context.diems.Any(e => e.diemId == id);
+            return _context.scores.Any(e => e.ScoreId == id);
 
         }
         [HttpDelete("{id}")]
       
         public async Task<IActionResult> DeleteMonAn(int id)
         {
-            var monAn = await _context.diems.FindAsync(id);
+            var monAn = await _context.scores.FindAsync(id);
             if (monAn == null)
             {
                 return NotFound();
             }
 
-            _context.diems.Remove(monAn);
+            _context.scores.Remove(monAn);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(
+                new
+            {
+                    retCode =1,
+                    retText="Xóa thành công"
+            });
         }
 
     }

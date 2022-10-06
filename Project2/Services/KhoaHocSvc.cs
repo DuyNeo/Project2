@@ -8,10 +8,10 @@ namespace Project2.Services
 {
     public interface IKhoaHoc
     {
-        public Task<List<KhoaHoc>> GetKhoahocAllAsync();
-        public Task<bool> EditKhoahocAsync(int id, KhoaHoc khoaHoc);
-        public Task<bool> AddKhoahocAsync(KhoaHoc khoaHoc);
-        public Task<KhoaHoc> GetKhoahocAsync(int? id);
+        public Task<List<Course>> GetKhoahocAllAsync();
+        public Task<bool> EditKhoahocAsync(int id, Course khoaHoc);
+        public Task<bool> AddKhoahocAsync(Course khoaHoc);
+        public Task<Course> GetKhoahocAsync(int? id);
     }
     public class KhoaHocSvc:IKhoaHoc
     {
@@ -21,7 +21,7 @@ namespace Project2.Services
             _context = context;
         }
 
-        public async Task<bool> AddKhoahocAsync(KhoaHoc khoaHoc)
+        public async Task<bool> AddKhoahocAsync(Course khoaHoc)
         {
             _context.Add(khoaHoc);
             await _context.SaveChangesAsync();
@@ -29,23 +29,23 @@ namespace Project2.Services
 
         }
 
-        public async Task<bool> EditKhoahocAsync(int id, KhoaHoc khoaHoc)
+        public async Task<bool> EditKhoahocAsync(int id, Course khoaHoc)
         {
             _context.Update(khoaHoc);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<KhoaHoc>> GetKhoahocAllAsync()
+        public async Task<List<Course>> GetKhoahocAllAsync()
         {
-            var dataContext = _context.khoaHocs;
+            var dataContext = _context.courses;
             return await dataContext.ToListAsync();
         }
 
-        public async Task<KhoaHoc> GetKhoahocAsync(int? id)
+        public async Task<Course> GetKhoahocAsync(int? id)
         {
-            var khoahoc = await _context.khoaHocs
-                .FirstOrDefaultAsync(m => m.khoaHocId == id);
+            var khoahoc = await _context.courses
+                .FirstOrDefaultAsync(m => m.CourseId == id);
             if(khoahoc == null) 
             {
                 return null;

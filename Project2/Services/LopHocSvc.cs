@@ -8,10 +8,12 @@ namespace Project2.Services
 {
     public interface ILopHoc
     {
-        public Task<List<LopHoc>> GetLophocAllAsync();
-        public Task<bool> EditLophocAsync(int id, LopHoc lopHoc);
-        public Task<bool> AddLophocAsync(LopHoc lopHoc);
-        public Task<LopHoc> GetLophocAsync(int? id);
+        public Task<List<Class>> GetLophocAllAsync();
+        public Task<bool> EditLophocAsync(int id, Class lopHoc);
+        public Task<bool> AddLophocAsync(Class lopHoc);
+        public Task<Class> GetLophocAsync(int? id);
+        Task<bool> isId(int id);//kiem tra ton tai cua email
+
     }
 
     public class LopHocSvc : ILopHoc
@@ -21,14 +23,22 @@ namespace Project2.Services
         {
             _context = context;
         }
-        public async Task<bool> AddLophocAsync(LopHoc lopHoc)
+        public async Task<bool> AddLophocAsync(Class lopHoc)
         {
-            _context.Add(lopHoc);
+            bool ret = false;
+            try
+            {
+              _context.Add(lopHoc);
             await _context.SaveChangesAsync();
-            return true;
+            ret = true;
+            }
+            catch
+            {
+            }
+            return ret;
         }
 
-        public async Task<bool> EditLophocAsync(int id, LopHoc lopHoc)
+        public async Task<bool> EditLophocAsync(int id, Class lopHoc)
         {
             //var lopHoc1 = await _context.lopHocs.FindAsync(id);
             //if (lopHoc == null)
@@ -36,26 +46,47 @@ namespace Project2.Services
             //    return false;
             //}
             //return true;
-            _context.lopHocs.Update(lopHoc);
+            _context.classes.Update(lopHoc);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<LopHoc>> GetLophocAllAsync()
+        public async Task<List<Class>> GetLophocAllAsync()
         {
-            var dataContext = _context.lopHocs;
+            var dataContext = _context.classes;
             return await dataContext.ToListAsync();
         }
 
-        public async Task<LopHoc> GetLophocAsync(int? id)
+        public async Task<Class> GetLophocAsync(int? id)
         {
-            var lopHoc = await _context.lopHocs
-                .FirstOrDefaultAsync(m => m.lopHocId == id);
+            var lopHoc = await _context.classes
+                .FirstOrDefaultAsync(m => m.ClassId == id);
             if(lopHoc == null)
             {
                 return null;
             }
             return lopHoc;
+        }
+        public async Task<bool> isId(int id)
+        {
+            bool ret = false;
+            try
+            {
+                Users nguoiDung = await _context.users.Where(x => x.UserId == id).FirstOrDefaultAsync();
+                if (nguoiDung != null)
+                {
+                    ret = true;
+                }
+                else
+                {
+                    ret = false;
+                }
+            }
+            catch
+            {
+                ret = false;
+            }
+            return ret;
         }
     }
 }

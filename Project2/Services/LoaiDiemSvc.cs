@@ -8,10 +8,10 @@ namespace Project2.Services
 {
     public interface ILoaiDiem
     {
-        public Task<List<LoaiDiem>> GetLoaidiemAllAsync();
-        public Task<bool> EditLoaidiemAsync(int id, LoaiDiem loaiDiem);
-        public Task<bool> AddLoaidiemAsync(LoaiDiem loaiDiem);
-        public Task<LoaiDiem> GetLoaidiemAsync(int? id);
+        public Task<List<PointType>> GetLoaidiemAllAsync();
+        public Task<bool> EditLoaidiemAsync(int id, PointType loaiDiem);
+        public Task<bool> AddLoaidiemAsync(PointType loaiDiem);
+        public Task<PointType> GetLoaidiemAsync(int? id);
     }
     public class LoaiDiemSvc:ILoaiDiem
     {
@@ -21,7 +21,7 @@ namespace Project2.Services
             _context = context;
         }
 
-        public async Task<bool> AddLoaidiemAsync(LoaiDiem loaiDiem)
+        public async Task<bool> AddLoaidiemAsync(PointType loaiDiem)
         {
             _context.Add(loaiDiem);
             await _context.SaveChangesAsync();
@@ -29,23 +29,24 @@ namespace Project2.Services
 
         }
 
-        public async Task<bool> EditLoaidiemAsync(int id, LoaiDiem loaiDiem)
+        public async Task<bool> EditLoaidiemAsync(int id, PointType loaiDiem)
         {
             _context.Update(loaiDiem);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<LoaiDiem>> GetLoaidiemAllAsync()
+        public async Task<List<PointType>> GetLoaidiemAllAsync()
         {
-            var dataContext = _context.loaiDiems;
+            var dataContext = _context.pointTypes
+                ;
             return await dataContext.ToListAsync();
         }
 
-        public async Task<LoaiDiem> GetLoaidiemAsync(int? id)
+        public async Task<PointType> GetLoaidiemAsync(int? id)
         {
-            var loaidiem = await _context.loaiDiems
-                .FirstOrDefaultAsync(m => m.loaiDiemId == id);
+            var loaidiem = await _context.pointTypes
+                .FirstOrDefaultAsync(m => m.PointTypeId == id);
             if(loaidiem == null)
             {
                 return null;

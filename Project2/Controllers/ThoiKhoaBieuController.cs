@@ -23,7 +23,7 @@ namespace Project2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddThoiKhoaBieuAsync(ThoiKhoaBieu ThoiKhoaBieu)
+        public async Task<ActionResult<int>> AddThoiKhoaBieuAsync(Schedule ThoiKhoaBieu)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListThoiKhoaBieu")]
-        public async Task<ActionResult<IEnumerable<ThoiKhoaBieu>>> GetThoiKhoaBieuAllAsync()
+        public async Task<ActionResult<IEnumerable<Schedule>>> GetThoiKhoaBieuAllAsync()
         {
             return await _ThoiKhoaBieu.GetThoiKhoaBieuAllAsync();
             //return Ok();
@@ -45,7 +45,7 @@ namespace Project2.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutThoiKhoaBieu(int id, ThoiKhoaBieu ThoiKhoaBieu)
+        public async Task<IActionResult> PutThoiKhoaBieu(int id, Schedule ThoiKhoaBieu)
         {
             if (id != ThoiKhoaBieu.Id)
             {
@@ -81,20 +81,20 @@ namespace Project2.Controllers
         }
         private bool ThoiKhoaBieuExists(int id)
         {
-            return _context.thoiKhoaBieus.Any(e => e.Id == id);
+            return _context.schedules.Any(e => e.Id == id);
 
         }
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteThoiKhoaBieu(int id)
         {
-            var thoiKhoaBieu = await _context.thoiKhoaBieus.FindAsync(id);
+            var thoiKhoaBieu = await _context.schedules.FindAsync(id);
             if (thoiKhoaBieu == null)
             {
                 return NotFound();
             }
 
-            _context.thoiKhoaBieus.Remove(thoiKhoaBieu);
+            _context.schedules.Remove(thoiKhoaBieu);
             await _context.SaveChangesAsync();
 
             return NoContent();

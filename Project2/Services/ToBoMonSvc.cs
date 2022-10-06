@@ -8,10 +8,10 @@ namespace Project2.Services
 {
     public interface IToBoMon
     {
-        public Task<List<ToBoMon>> GetToBoMonAllAsync();
-        public Task<bool> EditToBoMonAsync(int id, ToBoMon toBoMon);
-        public Task<bool> AddToBoMonAsync(ToBoMon toBoMon);
-        public Task<ToBoMon> GetToBoMonAsync(int? id);
+        public Task<List<Department>> GetToBoMonAllAsync();
+        public Task<bool> EditToBoMonAsync(int id, Department toBoMon);
+        public Task<bool> AddToBoMonAsync(Department toBoMon);
+        public Task<Department> GetToBoMonAsync(int? id);
     }
     public class ToBoMonSvc:IToBoMon
     {
@@ -21,30 +21,30 @@ namespace Project2.Services
             _context = context;
         }
 
-        public async Task<bool> AddToBoMonAsync(ToBoMon toBoMon)
+        public async Task<bool> AddToBoMonAsync(Department toBoMon)
         {
             _context.Add(toBoMon);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> EditToBoMonAsync(int id, ToBoMon toBoMon)
+        public async Task<bool> EditToBoMonAsync(int id, Department toBoMon)
         {
             _context.Update(toBoMon);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<List<ToBoMon>> GetToBoMonAllAsync()
+        public async Task<List<Department>> GetToBoMonAllAsync()
         {
-            var dataContext = _context.toBoMons;
+            var dataContext = _context.departments;
             return await dataContext.ToListAsync();
         }
 
-        public async Task<ToBoMon> GetToBoMonAsync(int? id)
+        public async Task<Department> GetToBoMonAsync(int? id)
         {
-            var tobomon = await _context.toBoMons
-                .FirstOrDefaultAsync(m => m.toBoMonId == id);
+            var tobomon = await _context.departments
+                .FirstOrDefaultAsync(m => m.DepartmentId == id);
             if(tobomon == null)
             {
                 return null;

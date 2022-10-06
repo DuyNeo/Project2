@@ -23,7 +23,7 @@ namespace Project2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddMonHocAsync(MonHoc MonHoc)
+        public async Task<ActionResult<int>> AddMonHocAsync(Subjects MonHoc)
         {
             try
             {
@@ -37,7 +37,7 @@ namespace Project2.Controllers
         }
         [HttpGet]
         [Route("ListMonHoc")]
-        public async Task<ActionResult<IEnumerable<MonHoc>>> GetMonHocAllAsync()
+        public async Task<ActionResult<IEnumerable<Subjects>>> GetMonHocAllAsync()
         {
             return await _MonHoc.GetMonhocAllAsync();
             //return Ok();
@@ -45,9 +45,9 @@ namespace Project2.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutMonHoc(int id, MonHoc MonHoc)
+        public async Task<IActionResult> PutMonHoc(int id, Subjects MonHoc)
         {
-            if (id != MonHoc.monHocId)
+            if (id != MonHoc.SubjectId)
             {
                 return BadRequest();
             }
@@ -55,15 +55,9 @@ namespace Project2.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
-
-
             try
             {
                 await _MonHoc.EditMonhocAsync(id, MonHoc);
-                //await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -81,20 +75,20 @@ namespace Project2.Controllers
         }
         private bool MonHocExists(int id)
         {
-            return _context.monHocs.Any(e => e.monHocId == id);
+            return _context.subjects.Any(e => e.SubjectId == id);
 
         }
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeletemonHoc(int id)
         {
-            var monHoc = await _context.monHocs.FindAsync(id);
+            var monHoc = await _context.subjects.FindAsync(id);
             if (monHoc == null)
             {
                 return NotFound();
             }
 
-            _context.monHocs.Remove(monHoc);
+            _context.subjects.Remove(monHoc);
             await _context.SaveChangesAsync();
 
             return NoContent();

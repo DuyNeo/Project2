@@ -24,7 +24,7 @@ namespace Project2.Controllers
 
         [HttpPost]
        
-        public async Task<ActionResult<int>> AddKhoaHocAsync(KhoaHoc KhoaHoc)
+        public async Task<ActionResult<int>> AddKhoaHocAsync(Course KhoaHoc)
         {
             try
             {
@@ -34,11 +34,15 @@ namespace Project2.Controllers
             {
                 Console.WriteLine("loi ne" + ex);
             }
-            return Ok(1);
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Thêm thành công"
+            });
         }
         [HttpGet]
         [Route("ListKhoaHoc")]
-        public async Task<ActionResult<IEnumerable<KhoaHoc>>> GetKhoaHocAllAsync()
+        public async Task<ActionResult<IEnumerable<Course>>> GetKhoaHocAllAsync()
         {
             return await _KhoaHoc.GetKhoahocAllAsync();
             //return Ok();
@@ -46,9 +50,9 @@ namespace Project2.Controllers
 
         [HttpPut("{id}")]
         
-        public async Task<IActionResult> PutKhoaHoc(int id, KhoaHoc KhoaHoc)
+        public async Task<IActionResult> PutKhoaHoc(int id, Course KhoaHoc)
         {
-            if (id != KhoaHoc.khoaHocId)
+            if (id != KhoaHoc.CourseId)
             {
                 return BadRequest();
             }
@@ -56,11 +60,6 @@ namespace Project2.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
-
-
             try
             {
                 await _KhoaHoc.EditKhoahocAsync(id, KhoaHoc);
@@ -78,11 +77,15 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_KhoaHoc.GetKhoahocAsync(id));
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Sửa thành công"
+            });
         }
         private bool KhoaHocExists(int id)
         {
-            return _context.khoaHocs.Any(e => e.khoaHocId == id);
+            return _context.courses.Any(e => e.CourseId == id);
 
         }
         [HttpDelete("{id}")]
@@ -90,16 +93,20 @@ namespace Project2.Controllers
 
         public async Task<IActionResult> DeletekhoaHoc(int id)
         {
-            var khoaHoc = await _context.khoaHocs.FindAsync(id);
+            var khoaHoc = await _context.courses.FindAsync(id);
             if (khoaHoc == null)
             {
                 return NotFound();
             }
 
-            _context.khoaHocs.Remove(khoaHoc);
+            _context.courses.Remove(khoaHoc);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Xóa thành công"
+            });
         }
 
     }

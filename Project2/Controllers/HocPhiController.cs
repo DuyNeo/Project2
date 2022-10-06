@@ -24,7 +24,7 @@ namespace Project2.Controllers
 
         [HttpPost]
        
-        public async Task<ActionResult<int>> AddHocPhiAsync(HocPhi HocPhi)
+        public async Task<ActionResult<int>> AddHocPhiAsync(Tuition HocPhi)
         {
             try
             {
@@ -32,24 +32,25 @@ namespace Project2.Controllers
             }
             catch (Exception ex)
             {
-                Console.WriteLine("loi ne" + ex);
+                
             }
-            return Ok(1);
+            return Ok(new
+            {
+                retCode = 1,
+                retText = "Thêm thành công"
+            });
         }
         [HttpGet]
         [Route("ListHocPhi")]
-        public async Task<ActionResult<IEnumerable<HocPhi>>> GetHocPhiAllAsync()
+        public async Task<ActionResult<IEnumerable<Tuition>>> GetHocPhiAllAsync()
         {
             return await _HocPhi.GetHocphiAllAsync();
-            //return Ok();
+            
         }
-
         [HttpPut("{id}")]
-      
-
-        public async Task<IActionResult> PutHocPhi(int id, HocPhi HocPhi)
+        public async Task<IActionResult> PutHocPhi(int id, Tuition HocPhi)
         {
-            if (id != HocPhi.hocPhiId)
+            if (id != HocPhi.TuitionId)
             {
                 return BadRequest();
             }
@@ -57,15 +58,10 @@ namespace Project2.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
-
-
             try
             {
                 await _HocPhi.EditHocphiAsync(id, HocPhi);
-                //await _context.SaveChangesAsync();
+               
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -79,11 +75,16 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_HocPhi.GetHocphiAsync(id));
+            return Ok(
+                 new
+                 {
+                     retCode = 1,
+                     retText = "Sửa thành công"
+                 });
         }
         private bool HocPhiExists(int id)
         {
-            return _context.hocPhis.Any(e => e.hocPhiId == id);
+            return _context.pointTypes.Any(e => e.PointTypeId == id);
 
         }
         [HttpDelete("{id}")]
@@ -91,16 +92,21 @@ namespace Project2.Controllers
 
         public async Task<IActionResult> DeleteHocPhi(int id)
         {
-            var HocPhi = await _context.hocPhis.FindAsync(id);
+            var HocPhi = await _context.pointTypes.FindAsync(id);
             if (HocPhi == null)
             {
                 return NotFound();
             }
 
-            _context.hocPhis.Remove(HocPhi);
+            _context.pointTypes.Remove(HocPhi);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(
+                 new
+                 {
+                     retCode = 1,
+                     retText = "Xóa thành công"
+                 });
         }
 
     }

@@ -9,42 +9,42 @@ using System.Threading.Tasks;
 
 namespace Project2.Models
 {
-    public class HocPhi
+    public class Tuition
     {
         [Key]
-        public int hocPhiId { get; set; }
+        public int TuitionId { get; set; }
 
         [ForeignKey("nguoiDung")]
-        public int hocPhiNguoiDungId { get; set; }
+        public int TuitionUserId { get; set; }
 
         [Display(Name = "Lớp Học")]
        
-        public string lopHoc { get; set; }
+        public string Class { get; set; }
 
         [Display(Name = "Khóa Đào Tạo")]
         
-        public string khoaDaoTao { get; set; }
+        public string Training { get; set; }
 
         [Display(Name = "Thu Phí")]
-        public double thuPhi { get; set; }
+        public double Fee { get; set; }
 
         [Display(Name = "Loại Học Phí")]
        
-        public string loaiThuPhi { get; set; }
+        public string TollType { get; set; }
 
         [Display(Name = "Mức Thu Phí")]
-        public double mucThuPhi { get; set; }
+        public double FeeRate { get; set; }
 
         [Display(Name = "Giảm Giá")]
-        public int giamGia { get; set; }
+        public int Discount { get; set; }
 
         [Display(Name = "Ghi Chú")]
         [StringLength(50)]
-        public string ghiChu { get; set; }
+        public string Note { get; set; }
 
         [Display(Name = "Trạng Thái")]
-        public string trangThai { get; set; }
+        public string Status { get; set; }
 
-        public NguoiDung nguoiDung { get; set; }
+        public Users users { get; set; }
     }
 }

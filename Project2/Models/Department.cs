@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace Project2.Models
 {
-    public class ToBoMon
+    public class Department //To Bo Mon
     {
         [Key]
-        public int toBoMonId { get; set; }
+        public int DepartmentId { get; set; }
         [Display(Name = "Tên Tổ Bộ Môn")]
-        public string toBoMonTen { get; set; }
+        public string DepartmentName { get; set; }
+        public List<Subjects> subjects { get; set; }
     }
 }

@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 
 namespace Project2.Models
 {
-    public class LoaiDiem
+    public class PointType
     {
         [Key]
-        public int loaiDiemId { get; set; }
+        public int PointTypeId { get; set; }
 
         [Display(Name = "Tên Loại Điểm"),
         StringLength(20)]
-        public string loaiDiemTen { get; set; }
+        public string PointTypeName { get; set; }
 
         [Display(Name = "Hệ Số")]
-        public int HeSo { get; set; }
-        
+        public int Coefficient { get; set; }
+        public List<Score> scores { get; set; }
     }
 }

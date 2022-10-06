@@ -24,24 +24,42 @@ namespace Project2.Controllers
     
         [HttpPost]
         [Route("Add")]
-        public async Task<ActionResult<int>> AddGiangVienAsync(GiangVien GiangVien)
+        public async Task<ActionResult> AddGiangVienAsync(Teachers GiangVien)
         {
-            try
+            if (ModelState.IsValid)
             {
-
-                await _GiangVien.AddGiangvienAsync(GiangVien);
-                Console.WriteLine("thanh cong");
+                if (await _GiangVien.isEmail(GiangVien.Email))
+                {
+                    return Ok(new
+                    {
+                        retCode = 0,
+                        retText = "Email đã tồn tại",
+                        data = ""
+                    });
+                }
+                else
+                {
+                    if (await _GiangVien.AddGiangvienAsync(GiangVien))
+                    {
+                        return Ok(new
+                        {
+                            retCode = 1,
+                            retText = "successfuly",
+                            data = await _GiangVien.GetGiangvienAsync(GiangVien.TeachersId)
+                        });
+                    }
+                }
 
             }
-            catch (Exception ex)
+            return Ok(new
             {
-                Console.WriteLine("loi ne" + ex);
-            }
-            return Ok(1);
+                retCode = 0,
+                retText = "failure"
+            });
         }
         [HttpGet]
         [Route("ListGiangVien")]
-        public async Task<ActionResult<IEnumerable<GiangVien>>> GetGiangVienAllAsync()
+        public async Task<ActionResult<IEnumerable<Teachers>>> GetGiangVienAllAsync()
         {
             return await _GiangVien.GetGiangvienAllAsync();
                          
@@ -49,9 +67,9 @@ namespace Project2.Controllers
 
         [HttpPut("{id}")]
 
-        public async Task<IActionResult> PutGiangVien(int id, GiangVien GiangVien)
+        public async Task<IActionResult> PutGiangVien(int id, Teachers GiangVien)
         {
-            if (id != GiangVien.gvId)
+            if (id != GiangVien.TeachersId)
             {
                 return BadRequest();
             }
@@ -59,11 +77,6 @@ namespace Project2.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
-
-
             try
             {
                 await _GiangVien.EditGiangvienAsync(id, GiangVien);
@@ -81,27 +94,38 @@ namespace Project2.Controllers
                 }
             }
 
-            return Ok(_GiangVien.GetGiangvienAsync(id));
+            return Ok(
+                 new
+                 {
+                     retCode = 1,
+                     retText = "Sửa thành công"
+                 });
+                
         }
         private bool GiangVienExists(int id)
         {
-            return _context.giangViens.Any(e => e.gvId == id);
+            return _context.teachers.Any(e => e.TeachersId == id);
 
         }
         [HttpDelete("{id}")]
 
         public async Task<IActionResult> DeleteGv(int id)
         {
-            var giangVien = await _context.giangViens.FindAsync(id);
+            var giangVien = await _context.teachers.FindAsync(id);
             if (giangVien == null)
             {
                 return NotFound();
             }
 
-            _context.giangViens.Remove(giangVien);
+            _context.teachers.Remove(giangVien);
             await _context.SaveChangesAsync();
 
-            return NoContent();
+            return Ok(
+                 new
+                 {
+                     retCode = 1,
+                     retText = "Xóa thành công"
+                 });
         }
 
     }
