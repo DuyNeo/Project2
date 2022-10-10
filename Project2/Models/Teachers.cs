@@ -64,7 +64,7 @@ namespace Project2.Models
         //public  Class Class { get; set; }
         public int RoleId { get; set; }
         public Role Role { get; set; }
-        public List<Schedule> schedules { get; set; }
+        public List<Salary> salaries { get; set; }
 
     }
     public enum Gender

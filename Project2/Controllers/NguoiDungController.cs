@@ -22,22 +22,7 @@ namespace Project2.Controllers
             _NguoiDung = NguoiDung;
         }
 
-        //[HttpPost]
-        //[Route("AddStudent")]
-        //public async Task<ActionResult<int>> AddNguoiDungAsync(Users NguoiDung) 
-        //{
-        //    try
-        //    {
-        //        await _NguoiDung.AddNguoidungAsync(NguoiDung);
-        //        Console.WriteLine("thanh cong");
-
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine("loi ne" + ex);
-        //    }
-        //    return Ok(1);
-        //}
+        
         [HttpPost, ActionName("teacher")]
         public async Task<IActionResult> PostAsync(Users users)
         {
@@ -59,7 +44,7 @@ namespace Project2.Controllers
                         return Ok(new
                         {
                             retCode = 1,
-                            retText = "successfuly",
+                            retText = "Thành công",
                             data = await _NguoiDung.GetNguoidungAsync(users.UserId)
                         });
                     }
@@ -69,7 +54,7 @@ namespace Project2.Controllers
             return Ok(new
             {
                 retCode = 0,
-                retText = "failure"
+                retText = "Thất bại"
             });
         }
         [HttpGet]
@@ -116,7 +101,7 @@ namespace Project2.Controllers
             {
                 //_NguoiDung.GetNguoidungAsync(id),
                 retCode = 0,
-                retText = "Update thanh cong"
+                retText = "Update thành công"
             });
 
         }

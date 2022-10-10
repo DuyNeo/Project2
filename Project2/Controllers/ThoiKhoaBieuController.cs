@@ -14,7 +14,7 @@ namespace Project2.Controllers
     [ApiController]
     public class ThoiKhoaBieuController : ControllerBase
     {
-        private readonly IThoiKhoaBieu _ThoiKhoaBieu;
+        private readonly IThoiKhoaBieu _ThoiKhoaBieu;   
         private readonly DataContext _context;
         public ThoiKhoaBieuController(IThoiKhoaBieu ThoiKhoaBieu, DataContext context)
         {
@@ -23,17 +23,26 @@ namespace Project2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> AddThoiKhoaBieuAsync(Schedule ThoiKhoaBieu)
+        public async Task<ActionResult<bool>> AddThoiKhoaBieuAsyncs(Schedule ThoiKhoaBieu)
         {
             try
             {
                 await _ThoiKhoaBieu.AddThoiKhoaBieuAsync(ThoiKhoaBieu);
+                return Ok(
+                    new
+                    {
+                        retText = "Thành công"
+
+                    });
             }
             catch (Exception ex)
             {
-                Console.WriteLine("loi ne" + ex);
+                
             }
-            return Ok(1);
+            return Ok(new
+            {
+                retText="Thất bại"
+            });
         }
         [HttpGet]
         [Route("ListThoiKhoaBieu")]
@@ -55,11 +64,6 @@ namespace Project2.Controllers
 
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            //var monan = await _monAnSvc.GetMonAn(id);
-            //if (monan == null) return NotFound($"{id} is not found");
-
-
             try
             {
                 await _ThoiKhoaBieu.EditThoiKhoaBieuAsync(id, ThoiKhoaBieu);

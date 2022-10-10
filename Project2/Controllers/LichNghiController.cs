@@ -12,54 +12,47 @@ namespace Project2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class LopHocController : ControllerBase
+    public class LichNghicController : ControllerBase
     {
-        private readonly ILopHoc _LopHoc;
+        private readonly ILichNghi _LichNghi;
         private readonly DataContext _context;
-        public LopHocController(ILopHoc LopHoc, DataContext context)
+        public LichNghicController(ILichNghi LichNghi, DataContext context)
         {
             _context = context;
-            _LopHoc = LopHoc;
+            _LichNghi = LichNghi;
         }
 
-        
         [HttpPost]
-        public async Task<ActionResult<bool>> AddLopHocAsync(Class LopHoc)
+       
+        public async Task<ActionResult<int>> AddLichNghicAsync(HolidaySchedule LichNghi)
         {
-            if (ModelState.IsValid)
+            try
             {
-                if (await _LopHoc.AddLophocAsync(LopHoc))
-                {
-                    return Ok(new
-                    {
-                        retCode = 1,
-                        retText = "Thành công"
-                    });
-                }
+                await _LichNghi.AddLichNghiAsync(LichNghi);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("loi ne" + ex);
             }
             return Ok(new
             {
-                retCode = 0,
-                retText ="Thất bại",
-               
-                
+                retCode = 1,
+                retText = "Thêm thành công"
             });
         }
-
-       
         [HttpGet]
-        [Route("ListLopHoc")]
-        public async Task<ActionResult<IEnumerable<Class>>> GetLopHocAllAsync()
+        [Route("ListLichNghi")]
+        public async Task<ActionResult<IEnumerable<HolidaySchedule>>> GetLichNghicAllAsync()
         {
-           return await _LopHoc.GetLophocAllAsync();
-            
+            return await _LichNghi.GetLichNghiAllAsync();
+            //return Ok();
         }
 
         [HttpPut("{id}")]
-
-        public async Task<IActionResult> PutLopHoc(int id, Class lopHoc)
+        
+        public async Task<IActionResult> PutLichNghic(int id, HolidaySchedule LichNghi)
         {
-            if (id != lopHoc.ClassId)
+            if (id != LichNghi.HolidayId)
             {
                 return BadRequest();
             }
@@ -69,12 +62,12 @@ namespace Project2.Controllers
                 return BadRequest(ModelState);
             try
             {
-                await _LopHoc.EditLophocAsync(id, lopHoc);
+                await _LichNghi.EditLichNghiAsync(id, LichNghi);
                 //await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!LopHocExists(id))
+                if (!LichNghicExists(id))
                 {
                     return NotFound();
                 }
@@ -90,22 +83,23 @@ namespace Project2.Controllers
                 retText = "Sửa thành công"
             });
         }
-        private bool LopHocExists(int id)
+        private bool LichNghicExists(int id)
         {
-            return _context.classes.Any(e => e.ClassId == id);
+            return _context.holidaySchedules.Any(e => e.HolidayId == id);
 
         }
         [HttpDelete("{id}")]
+       
 
-        public async Task<IActionResult> DeleteLopHoc(int id)
+        public async Task<IActionResult> DeleteLichNghic(int id)
         {
-            var lopHoc = await _context.classes.FindAsync(id);
-            if (lopHoc == null)
+            var LichNghi = await _context.holidaySchedules.FindAsync(id);
+            if (LichNghi == null)
             {
                 return NotFound();
             }
 
-            _context.classes.Remove(lopHoc);
+            _context.holidaySchedules.Remove(LichNghi);
             await _context.SaveChangesAsync();
 
             return Ok(new

@@ -44,7 +44,7 @@ namespace Project2.Controllers
                         return Ok(new
                         {
                             retCode = 1,
-                            retText = "successfuly",
+                            retText = "Thành công",
                             data = await _GiangVien.GetGiangvienAsync(GiangVien.TeachersId)
                         });
                     }
@@ -54,7 +54,7 @@ namespace Project2.Controllers
             return Ok(new
             {
                 retCode = 0,
-                retText = "failure"
+                retText = "Thất bại"
             });
         }
         [HttpGet]

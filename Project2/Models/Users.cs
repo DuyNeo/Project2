@@ -66,6 +66,6 @@ namespace Project2.Models
 
         public List<Schedule> schedules { get; set; }
 
-
+        public List<Tuition> tuitions { get; set; }
     }
 }

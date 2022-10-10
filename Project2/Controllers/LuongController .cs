@@ -12,23 +12,23 @@ namespace Project2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HocPhiController : ControllerBase
+    public class LuongController : ControllerBase
     {
-        private readonly IHocPhi _HocPhi;
+        private readonly ILuong _Luong;
         private readonly DataContext _context;
-        public HocPhiController(IHocPhi HocPhi, DataContext context)
+        public LuongController(ILuong Luong, DataContext context)
         {
             _context = context;
-            _HocPhi = HocPhi;
+            _Luong = Luong;
         }
 
         [HttpPost]
        
-        public async Task<ActionResult<int>> AddHocPhiAsync(Tuition HocPhi)
+        public async Task<ActionResult<int>> AddLuongAsync(Salary Luong)
         {
             try
             {
-                await _HocPhi.AddHocphiAsync(HocPhi);
+                await _Luong.AddLuongAsync(Luong);
             }
             catch (Exception ex)
             {
@@ -41,16 +41,16 @@ namespace Project2.Controllers
             });
         }
         [HttpGet]
-        [Route("ListHocPhi")]
-        public async Task<ActionResult<IEnumerable<Tuition>>> GetHocPhiAllAsync()
+        [Route("ListLuong")]
+        public async Task<ActionResult<IEnumerable<Salary>>> GetLuongAllAsync()
         {
-            return await _HocPhi.GetHocphiAllAsync();
+            return await _Luong.GetLuongAllAsync();
             
         }
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHocPhi(int id, Tuition HocPhi)
+        public async Task<IActionResult> PutLuong(int id, Salary Luong)
         {
-            if (id != HocPhi.TuitionId)
+            if (id != Luong.SalaryId)
             {
                 return BadRequest();
             }
@@ -60,12 +60,12 @@ namespace Project2.Controllers
                 return BadRequest(ModelState);
             try
             {
-                await _HocPhi.EditHocphiAsync(id, HocPhi);
+                await _Luong.EditLuongAsync(id, Luong);
                
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!HocPhiExists(id))
+                if (!LuongExists(id))
                 {
                     return NotFound();
                 }
@@ -82,23 +82,23 @@ namespace Project2.Controllers
                      retText = "Sửa thành công"
                  });
         }
-        private bool HocPhiExists(int id)
+        private bool LuongExists(int id)
         {
-            return _context.tuitions.Any(e => e.TuitionId == id);
+            return _context.salaries.Any(e => e.SalaryId == id);
 
         }
         [HttpDelete("{id}")]
        
 
-        public async Task<IActionResult> DeleteHocPhi(int id)
+        public async Task<IActionResult> DeleteLuong(int id)
         {
-            var HocPhi = await _context.tuitions.FindAsync(id);
-            if (HocPhi == null)
+            var Luong = await _context.salaries.FindAsync(id);
+            if (Luong == null)
             {
                 return NotFound();
             }
 
-            _context.tuitions.Remove(HocPhi);
+            _context.salaries.Remove(Luong);
             await _context.SaveChangesAsync();
 
             return Ok(

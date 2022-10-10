@@ -31,6 +31,8 @@ namespace Project2
             services.AddDbContext<DataContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("ASM")));
             services.AddControllers();
+            //services.AddControllersWithViews().AddNewtonsoftJson(options =>
+            //    options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Project2", Version = "v1" });
@@ -47,7 +49,8 @@ namespace Project2
             services.AddTransient<IThoiKhoaBieu, ThoiKhoaBieuSvc>();
             services.AddTransient<IToBoMon, ToBoMonSvc>();
             services.AddTransient<IMaHoaHelper, MahoaHelper>();
-           
+            services.AddTransient<ILichNghi, LichNghiSvc>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

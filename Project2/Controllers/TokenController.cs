@@ -81,7 +81,7 @@ namespace Project2.Controllers
                 new
                 {
                     retCode = 1,
-                    retText = "Thanh cong"
+                    retText = "Thành công"
                 }) ;
         }
         private string CreateToken(Users user)

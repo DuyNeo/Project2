@@ -13,12 +13,8 @@ namespace Project2.Models
     {
         [Key]
         public int TuitionId { get; set; }
-
-        [ForeignKey("nguoiDung")]
-        public int TuitionUserId { get; set; }
-
         [Display(Name = "Lớp Học")]
-       
+  
         public string Class { get; set; }
 
         [Display(Name = "Khóa Đào Tạo")]
@@ -44,7 +40,9 @@ namespace Project2.Models
 
         [Display(Name = "Trạng Thái")]
         public string Status { get; set; }
+        
 
+        public int UserId { get; set; }
         public Users users { get; set; }
     }
 }

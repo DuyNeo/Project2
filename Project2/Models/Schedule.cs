@@ -20,17 +20,12 @@ namespace Project2.Models
         [StringLength(50)]
         [Display(Name = "Tên Lớp")]
         public string ClassName { get; set; }
-
-        [StringLength(50)]
-        [Display(Name = "Môn Học")]
-        public string Subjects { get; set; }
-
         [StringLength(50)]
         [Display(Name = "Phòng Học")]
         public string ClassRoom { get; set; }
 
         [Display(Name = "Giờ Học")]
-        public DateTime Hours { get; set; }
+        public string Hours { get; set; }
 
         public bool Mon { get; set; }
         public bool Tue { get; set; }
@@ -40,17 +35,20 @@ namespace Project2.Models
         public bool Sat { get; set; }
         public bool Sun { get; set; }
         [Required]
-        [Display(Name = "Ngày Bắt Đầu")]
-        public DateTime StartDay { get; set; }
+        [Display(Name = "Giờ Bắt Đầu")]
+        public DateTime StartTime { get; set; }
 
-        [Display(Name = "Ngày Kết Thúc")]
-        public DateTime EndDay { get; set; }
-
-        [Display(Name = "Thời Gian")]
+        [Display(Name = "Giờ Kết Thúc")]
         public DateTime Time { get; set; }
 
+        //[Display(Name = "Thời Gian")]
+        //public DateTime Time { get; set; }
 
+        public int UserId { get; set; }
         public Users users { get; set; }
+        //public int TeachersId { get; set; }
+        //public Teachers teachers { get; set; }
+        public int SubjectId { get; set; }
         public Subjects subjects { get; set; }
     }
 }

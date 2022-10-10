@@ -10,8 +10,8 @@ using Project2.Models;
 namespace Project2.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221005050638_MonHoc")]
-    partial class MonHoc
+    [Migration("20221007065253_s")]
+    partial class s
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -153,46 +153,51 @@ namespace Project2.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("Day")
+                    b.Property<bool>("Fri")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Hours")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Mon")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Sat")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Hours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ScheduleSubject")
+                    b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ScheduleUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Subjects")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<bool>("Sun")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TeacherName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("Thu")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("subjectsSubjectId")
+                    b.Property<bool>("Tue")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("usersUserId")
-                        .HasColumnType("int");
+                    b.Property<bool>("Wed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("subjectsSubjectId");
+                    b.HasIndex("SubjectId");
 
-                    b.HasIndex("usersUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("schedules");
                 });
@@ -204,31 +209,25 @@ namespace Project2.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("loaiDiemPointTypeId")
+                    b.Property<float>("Diem")
+                        .HasColumnType("real");
+
+                    b.Property<int>("PointTypeId")
                         .HasColumnType("int");
 
-                    b.Property<int>("soCotDiem")
+                    b.Property<int>("SubjectsId")
                         .HasColumnType("int");
 
-                    b.Property<int>("soCotDiemBatBuoc")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
-
-                    b.Property<string>("sourseName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
-
-                    b.Property<int>("subjectScore")
-                        .HasColumnType("int");
-
-                    b.Property<string>("subjectsName")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("ScoreId");
 
-                    b.HasIndex("loaiDiemPointTypeId");
+                    b.HasIndex("PointTypeId");
 
-                    b.HasIndex("subjectScore");
+                    b.HasIndex("SubjectsId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("scores");
                 });
@@ -361,9 +360,6 @@ namespace Project2.Migrations
                     b.Property<string>("Training")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TuitionUserId")
-                        .HasColumnType("int");
-
                     b.Property<int?>("usersUserId")
                         .HasColumnType("int");
 
@@ -433,12 +429,16 @@ namespace Project2.Migrations
             modelBuilder.Entity("Project2.Models.Schedule", b =>
                 {
                     b.HasOne("Project2.Models.Subjects", "subjects")
-                        .WithMany()
-                        .HasForeignKey("subjectsSubjectId");
+                        .WithMany("schedules")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Project2.Models.Users", "users")
-                        .WithMany()
-                        .HasForeignKey("usersUserId");
+                        .WithMany("schedules")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("subjects");
 
@@ -447,19 +447,29 @@ namespace Project2.Migrations
 
             modelBuilder.Entity("Project2.Models.Score", b =>
                 {
-                    b.HasOne("Project2.Models.PointType", "loaiDiem")
-                        .WithMany()
-                        .HasForeignKey("loaiDiemPointTypeId");
-
-                    b.HasOne("Project2.Models.Subjects", "monHoc")
-                        .WithMany()
-                        .HasForeignKey("subjectScore")
+                    b.HasOne("Project2.Models.PointType", "pointTypes")
+                        .WithMany("scores")
+                        .HasForeignKey("PointTypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("loaiDiem");
+                    b.HasOne("Project2.Models.Subjects", "subjects")
+                        .WithMany("scores")
+                        .HasForeignKey("SubjectsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("monHoc");
+                    b.HasOne("Project2.Models.Users", "users")
+                        .WithMany("scores")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("pointTypes");
+
+                    b.Navigation("subjects");
+
+                    b.Navigation("users");
                 });
 
             modelBuilder.Entity("Project2.Models.Subjects", b =>
@@ -536,11 +546,30 @@ namespace Project2.Migrations
                     b.Navigation("subjects");
                 });
 
+            modelBuilder.Entity("Project2.Models.PointType", b =>
+                {
+                    b.Navigation("scores");
+                });
+
             modelBuilder.Entity("Project2.Models.Role", b =>
                 {
                     b.Navigation("teachers");
 
                     b.Navigation("users");
+                });
+
+            modelBuilder.Entity("Project2.Models.Subjects", b =>
+                {
+                    b.Navigation("schedules");
+
+                    b.Navigation("scores");
+                });
+
+            modelBuilder.Entity("Project2.Models.Users", b =>
+                {
+                    b.Navigation("schedules");
+
+                    b.Navigation("scores");
                 });
 #pragma warning restore 612, 618
         }

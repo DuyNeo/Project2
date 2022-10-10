@@ -25,20 +25,7 @@ namespace Project2.Services
 
         public async Task<bool> AddGiangvienAsync(Teachers giangVien)
         {
-            //int ret = 0;
-            //try 
-            //{
-
-            //    await _context.AddAsync(giangVien);
-            //    await _context.SaveChangesAsync();
-            //    ret = giangVien.TeachersId;
-            //}
-            //catch
-            //{
-            //    ret = 0;
-            //}
-
-            //return ret;
+          
             _context.Add(giangVien);
             await _context.SaveChangesAsync();
             return true;
@@ -73,7 +60,7 @@ namespace Project2.Services
             bool ret = false;
             try
             {
-                Users nguoiDung = await _context.users.Where(x => x.Email == email).FirstOrDefaultAsync();
+                Teachers nguoiDung = await _context.teachers.Where(x => x.Email == email).FirstOrDefaultAsync();
                 if (nguoiDung != null)
                 {
                     ret = true;

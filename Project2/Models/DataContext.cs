@@ -56,8 +56,29 @@ namespace Project2.Models
        .WithMany(x => x.scores)
        .HasForeignKey(v => v.UserId)
        );
+      //      modelBuilder.Entity<Schedule>(a => a.HasOne(n => n.teachers)
+      //.WithMany(x => x.schedules)
+      //.HasForeignKey(v => v.TeachersId)
+      //);
+            modelBuilder.Entity<Schedule>(a => a.HasOne(n => n.subjects)
+      .WithMany(x => x.schedules)
+      .HasForeignKey(v => v.SubjectId)
+      );
+            modelBuilder.Entity<Schedule>(a => a.HasOne(n => n.users)
+      .WithMany(x => x.schedules)
+      .HasForeignKey(v => v.UserId)
+      );
+            modelBuilder.Entity<Tuition>(a => a.HasOne(n => n.users)
+          .WithMany(x => x.tuitions)
+          .HasForeignKey(v => v.UserId)
+          );
+        modelBuilder.Entity<Salary>(a => a.HasOne(n => n.teachers)
+          .WithMany(x => x.salaries)
+          .HasForeignKey(v => v.TeacherId)
+          );
         }
-        public DbSet<Users> users { get; set; }
+       
+    public DbSet<Users> users { get; set; }
        
         public DbSet<Class> classes { get; set; }
         public DbSet<Score> scores { get; set; }
@@ -72,5 +93,7 @@ namespace Project2.Models
         public DbSet<Subjects> subjects { get; set; }
         public DbSet<Teachers> teachers { get; set; }
         public DbSet<Role> roles { get; set; }
+        public DbSet<HolidaySchedule> holidaySchedules { get; set; }
+        public DbSet<Salary> salaries { get; set; }
     }
 }

@@ -101,6 +101,32 @@ namespace Project2.Migrations
                     b.ToTable("departments");
                 });
 
+            modelBuilder.Entity("Project2.Models.HolidaySchedule", b =>
+                {
+                    b.Property<int>("HolidayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("EndDay")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("HolidayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Reason")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<DateTime>("StartDay")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("HolidayId");
+
+                    b.ToTable("holidaySchedules");
+                });
+
             modelBuilder.Entity("Project2.Models.PointType", b =>
                 {
                     b.Property<int>("PointTypeId")
@@ -151,46 +177,51 @@ namespace Project2.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<DateTime>("Day")
+                    b.Property<bool>("Fri")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Hours")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("Mon")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("Sat")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("StartTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("EndDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("Hours")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("ScheduleSubject")
+                    b.Property<int>("SubjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ScheduleUser")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("StartDay")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Subjects")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<bool>("Sun")
+                        .HasColumnType("bit");
 
                     b.Property<string>("TeacherName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<bool>("Thu")
+                        .HasColumnType("bit");
+
                     b.Property<DateTime>("Time")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("subjectsSubjectId")
+                    b.Property<bool>("Tue")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.Property<int?>("usersUserId")
-                        .HasColumnType("int");
+                    b.Property<bool>("Wed")
+                        .HasColumnType("bit");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("subjectsSubjectId");
+                    b.HasIndex("SubjectId");
 
-                    b.HasIndex("usersUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("schedules");
                 });
@@ -353,15 +384,12 @@ namespace Project2.Migrations
                     b.Property<string>("Training")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("TuitionUserId")
-                        .HasColumnType("int");
-
-                    b.Property<int?>("usersUserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
                     b.HasKey("TuitionId");
 
-                    b.HasIndex("usersUserId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("tuitions");
                 });
@@ -425,12 +453,16 @@ namespace Project2.Migrations
             modelBuilder.Entity("Project2.Models.Schedule", b =>
                 {
                     b.HasOne("Project2.Models.Subjects", "subjects")
-                        .WithMany()
-                        .HasForeignKey("subjectsSubjectId");
+                        .WithMany("schedules")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("Project2.Models.Users", "users")
-                        .WithMany()
-                        .HasForeignKey("usersUserId");
+                        .WithMany("schedules")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("subjects");
 
@@ -497,8 +529,10 @@ namespace Project2.Migrations
             modelBuilder.Entity("Project2.Models.Tuition", b =>
                 {
                     b.HasOne("Project2.Models.Users", "users")
-                        .WithMany()
-                        .HasForeignKey("usersUserId");
+                        .WithMany("tuitions")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("users");
                 });
@@ -552,12 +586,18 @@ namespace Project2.Migrations
 
             modelBuilder.Entity("Project2.Models.Subjects", b =>
                 {
+                    b.Navigation("schedules");
+
                     b.Navigation("scores");
                 });
 
             modelBuilder.Entity("Project2.Models.Users", b =>
                 {
+                    b.Navigation("schedules");
+
                     b.Navigation("scores");
+
+                    b.Navigation("tuitions");
                 });
 #pragma warning restore 612, 618
         }
