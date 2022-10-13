@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "oi3b4SF2OgvxySKfCGJQbXemop/IU44pZ46l3nmwxbAtKTqte0I8mDV/3lqUyV//pwMGURHyBcv051Ul0RcA8A==",
+  "dgSpecHash": "Z6EglXNVm++XA2xv0q0pyh+yJu5ctut43oaKlDgqjcoSo3s/MSUbGnuLCs+oGtmxnyj9RYB2zwNLB/319c/NPw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\hp\\OneDrive\\Máy tính\\Project2\\Project2\\Project2.csproj",
+  "projectFilePath": "C:\\Users\\hp\\OneDrive\\Máy tính\\intern\\New folder\\Project2\\Project2\\Project2.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\hp\\.nuget\\packages\\grpc.core.api\\2.48.0\\grpc.core.api.2.48.0.nupkg.sha512",
     "C:\\Users\\hp\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",

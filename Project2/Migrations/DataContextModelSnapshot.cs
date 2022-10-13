@@ -162,6 +162,29 @@ namespace Project2.Migrations
                     b.ToTable("roles");
                 });
 
+            modelBuilder.Entity("Project2.Models.Salary", b =>
+                {
+                    b.Property<int>("SalaryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("SalaryMoth")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Status")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("TeacherId")
+                        .HasColumnType("int");
+
+                    b.HasKey("SalaryId");
+
+                    b.HasIndex("TeacherId");
+
+                    b.ToTable("salaries");
+                });
+
             modelBuilder.Entity("Project2.Models.Schedule", b =>
                 {
                     b.Property<int>("Id")
@@ -450,6 +473,17 @@ namespace Project2.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("Project2.Models.Salary", b =>
+                {
+                    b.HasOne("Project2.Models.Teachers", "teachers")
+                        .WithMany("salaries")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("teachers");
+                });
+
             modelBuilder.Entity("Project2.Models.Schedule", b =>
                 {
                     b.HasOne("Project2.Models.Subjects", "subjects")
@@ -589,6 +623,11 @@ namespace Project2.Migrations
                     b.Navigation("schedules");
 
                     b.Navigation("scores");
+                });
+
+            modelBuilder.Entity("Project2.Models.Teachers", b =>
+                {
+                    b.Navigation("salaries");
                 });
 
             modelBuilder.Entity("Project2.Models.Users", b =>

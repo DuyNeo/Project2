@@ -58,6 +58,22 @@ namespace Project2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "holidaySchedules",
+                columns: table => new
+                {
+                    HolidayId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    HolidayName = table.Column<string>(type: "nvarchar(255)", nullable: false),
+                    Reason = table.Column<string>(type: "nvarchar(255)", nullable: false),
+                    StartDay = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    EndDay = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_holidaySchedules", x => x.HolidayId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "pointTypes",
                 columns: table => new
                 {
@@ -181,6 +197,27 @@ namespace Project2.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "salaries",
+                columns: table => new
+                {
+                    SalaryId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    SalaryMoth = table.Column<int>(type: "int", nullable: false),
+                    Status = table.Column<bool>(type: "bit", nullable: false),
+                    TeacherId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_salaries", x => x.SalaryId);
+                    table.ForeignKey(
+                        name: "FK_salaries_teachers_TeacherId",
+                        column: x => x.TeacherId,
+                        principalTable: "teachers",
+                        principalColumn: "TeachersId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "schedules",
                 columns: table => new
                 {
@@ -197,8 +234,7 @@ namespace Project2.Migrations
                     Fri = table.Column<bool>(type: "bit", nullable: false),
                     Sat = table.Column<bool>(type: "bit", nullable: false),
                     Sun = table.Column<bool>(type: "bit", nullable: false),
-                    StartDay = table.Column<TimeSpan>(type: "time", nullable: false),
-                    EndDay = table.Column<TimeSpan>(type: "time", nullable: false),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Time = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     SubjectId = table.Column<int>(type: "int", nullable: false)
@@ -268,18 +304,23 @@ namespace Project2.Migrations
                     Discount = table.Column<int>(type: "int", nullable: false),
                     Note = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     Status = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    usersUserId = table.Column<int>(type: "int", nullable: true)
+                    UserId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_tuitions", x => x.TuitionId);
                     table.ForeignKey(
-                        name: "FK_tuitions_users_usersUserId",
-                        column: x => x.usersUserId,
+                        name: "FK_tuitions_users_UserId",
+                        column: x => x.UserId,
                         principalTable: "users",
                         principalColumn: "UserId",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_salaries_TeacherId",
+                table: "salaries",
+                column: "TeacherId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_schedules_SubjectId",
@@ -322,9 +363,9 @@ namespace Project2.Migrations
                 column: "RoleId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_tuitions_usersUserId",
+                name: "IX_tuitions_UserId",
                 table: "tuitions",
-                column: "usersUserId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_users_ClassId",
@@ -340,16 +381,22 @@ namespace Project2.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "holidaySchedules");
+
+            migrationBuilder.DropTable(
+                name: "salaries");
+
+            migrationBuilder.DropTable(
                 name: "schedules");
 
             migrationBuilder.DropTable(
                 name: "scores");
 
             migrationBuilder.DropTable(
-                name: "teachers");
+                name: "tuitions");
 
             migrationBuilder.DropTable(
-                name: "tuitions");
+                name: "teachers");
 
             migrationBuilder.DropTable(
                 name: "pointTypes");

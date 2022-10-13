@@ -50,6 +50,7 @@ namespace Project2
             services.AddTransient<IToBoMon, ToBoMonSvc>();
             services.AddTransient<IMaHoaHelper, MahoaHelper>();
             services.AddTransient<ILichNghi, LichNghiSvc>();
+            services.AddTransient<ILuong, LuongSvc>();
 
         }
 
